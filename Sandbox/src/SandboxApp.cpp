@@ -18,6 +18,5 @@ public:
 
 Hazel::Application* Hazel::CreateApplication()
 {
-	printf("Create Sandbox!!\n");
 	return new Sandbox();
 }
