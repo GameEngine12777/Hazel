@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 
 	HZ_CORE_WARNING("Initialize log!");
 
-	HZ_INFO("Hello! Var={0}", argv);
+	HZ_INFO("Hello! Var={0}", argc);
 
 	printf("Hazel Engine Start!\n");
 	auto app = Hazel::CreateApplication();
