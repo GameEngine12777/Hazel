@@ -8,12 +8,11 @@ extern Hazel::Application* Hazel::CreateApplication();
 
 int main(int argc, char** argv)
 {
-	Hazel::Log::Init();
+	 Hazel::Log::Init();
 
+	 HZ_CORE_WARNING("Initialize log!");
 
-	HZ_CORE_WARNING("Initialize log!");
-
-	HZ_INFO("Hello! Var={0}", argc);
+	 HZ_INFO("Hello! Var={0}", argc);
 
 	printf("Hazel Engine Start!\n");
 	auto app = Hazel::CreateApplication();

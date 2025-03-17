@@ -26,47 +26,44 @@ project "Hazel"
 
 	includedirs
 	{
+		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include"
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
-		systemversion "10.0"
+		systemversion "latest"
 
 		defines
 		{
 			"HZ_PLATFORM_WINDOWS",
-			"HZ_BUILD_DLL",
-			"_WINDLL"
+			"HZ_BUILD_DLL"
 		}
 
-		-- postbuildcommands
-		-- {
-		-- 	("{COPY} ../bin/" .. outputdir .. "/Hazel/Hazel.dll ../bin/" .. outputdir .. "/Sandbox")
-		-- }
+		postbuildcommands
+		{
+			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+		}
 
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
 		symbols "On"
+		buildoptions "/utf-8"
+
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
 		optimize "On"
+		buildoptions "/utf-8"
+
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
 		optimize "On"
-
-
-	filter { "system:windows", "configurations:Debug" }
 		buildoptions "/utf-8"
 
-	filter { "system:windows", "configurations:Release" }
-		buildoptions "/utf-8"
 
-	filter { "system:windows", "configurations:Dist" }
-		buildoptions "/utf-8"
 
 project "Sandbox"
 	location "Sandbox"
@@ -96,7 +93,7 @@ project "Sandbox"
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
-		systemversion "10.0"
+		systemversion "latest"
 
 		defines
 		{
@@ -106,20 +103,15 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "HZ_DEBUG"
 		symbols "On"
+		buildoptions "/utf-8"
 
 	filter "configurations:Release"
 		defines "HZ_RELEASE"
 		optimize "On"
+		buildoptions "/utf-8"
 
 	filter "configurations:Dist"
 		defines "HZ_DIST"
 		optimize "On"
-
-	filter { "system:windows", "configurations:Debug" }
 		buildoptions "/utf-8"
-
-	filter { "system:windows", "configurations:Release" }
-		buildoptions "/utf-8"
-
-	filter { "system:windows", "configurations:Dist" }
-		buildoptions "/utf-8"
+		
