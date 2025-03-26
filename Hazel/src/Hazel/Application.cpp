@@ -1,40 +1,61 @@
 #include "hzpch.h"
 #include "Application.h"
-#include "Hazel/Events/ApplicationEvent.h"
 #include "Hazel/Log.h"
 
 #include <GLFW/glfw3.h>
 
-Hazel::Application::Application()
+namespace Hazel
 {
-	m_Window = std::unique_ptr<Window>(Window::Create());
-}
+#define BIND_EVENT_FN(Fun) std::bind(Fun, this, std::placeholders::_1)
 
-Hazel::Application::~Application()
-{
-}
+	Application::Application()
+	{
+		m_Window = std::unique_ptr<Window>(Window::Create());
 
-void Hazel::Application::Run()
-{
-	WindowResizeEvent e(1280, 720);
-	if (e.IsInCategory(EventCategoryApplication))
-	{
-		HZ_TRACE(e.ToString());
-	}
-	if (e.IsInCategory(EventCategoryInput))
-	{
-		HZ_TRACE(e.ToString());
+		// 绑定执行事件
+		m_Window->SetEventCallback(BIND_EVENT_FN(&Application::OnEvent));
 	}
 
-	while (m_Running)
+	Application::~Application()
 	{
-		glClearColor(1, 0, 1, 1);
-		glClear(GL_COLOR_BUFFER_BIT);
-		m_Window->OnUpdate();
 	}
-}
 
-Hazel::Application* Hazel::CreateApplication()
-{
-	return new Application();
+	void Application::Run()
+	{
+		WindowResizeEvent e(1280, 720);
+		if (e.IsInCategory(EventCategoryApplication))
+		{
+			HZ_TRACE(e.ToString());
+		}
+		if (e.IsInCategory(EventCategoryInput))
+		{
+			HZ_TRACE(e.ToString());
+		}
+
+		while (m_Running)
+		{
+			glClearColor(1, 0, 1, 1);
+			glClear(GL_COLOR_BUFFER_BIT);
+			m_Window->OnUpdate();
+		}
+	}
+
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(&Application::OnWindowClose));
+
+		HZ_CORE_INFO("{0}", e.ToString());
+	}
+
+	Application* CreateApplication()
+	{
+		return new Application();
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
 }

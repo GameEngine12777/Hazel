@@ -10,11 +10,8 @@ int main(int argc, char** argv)
 {
 	Hazel::Log::Init();
 
-	HZ_CORE_WARNING("Initialize log!");
+	HZ_CORE_WARNING("Hello, Welcome to the Game Engine!!!");
 
-	HZ_INFO("Hello! Var={0}", argc);
-
-	printf("Hazel Engine Start!\n");
 	auto app = Hazel::CreateApplication();
 	app->Run();
 	delete app;
