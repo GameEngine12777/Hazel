@@ -38,6 +38,13 @@ namespace Hazel
 
 	void Application::OnEvent(Event& e)
 	{
+		/**
+		* 以下列出各种事件的处理函数
+		* 如果 e 是 WindowCloseEvent，那么这里传入的函数会被调用
+		* 再列出其他情况的，例： 
+		* 如果 e 是 WindowXXXEvent，那么这里传入的函数会被调用
+		* dispatcher.Dispatch<WindowXXXEvent>(BIND_EVENT_FN(OnWindowXXX));
+		*/
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(&Application::OnWindowClose));
 

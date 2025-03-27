@@ -14,7 +14,10 @@ namespace Hazel {
 
 		void Run();
 
-		// 用来绑定 GLFW 窗口回调事件，然后分发到我们的 App 中
+		/**
+		* 用来绑定 GLFW 窗口回调事件，然后分发到我们的 App 中
+		* 这里用 Event 的基类来接受各种事件的派生类的对象
+		*/
 		void OnEvent(Event& e);
 
 		void PushLayer(Layer* layer);
