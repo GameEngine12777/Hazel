@@ -32,7 +32,10 @@ namespace Hazel
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			// 更新图层
+			/**
+			* 更新图层
+			* 处理渲染时，应该先画最远的Layer，再画最近的Layer
+			*/
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
@@ -53,11 +56,20 @@ namespace Hazel
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(&Application::OnWindowClose));
 
-		// HZ_CORE_INFO("{0}", e.ToString());
-
+		/**
+		* 事件传递
+		* 处理事件时正好相反，因为最上面一层的Layer才应该是接受event的对象
+		*/
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
+			/**
+			* 反向传递事件
+			*/
 			(*--it)->OnEvent(e);
+
+			/**
+			* 如果当前图层消耗掉了事件，将不再向下传递
+			*/
 			if (e.Handled)
 				break;
 		}
