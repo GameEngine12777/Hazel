@@ -1,14 +1,16 @@
 workspace "Hazel"
 	architecture "x64"
-
+	
 	configurations
 	{
 		"Debug",
 		"Release",
 		"Dist"
 	}
-
+	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+
+startproject "Sandbox"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
@@ -20,7 +22,7 @@ IncludeDir["ImGui"] = "Hazel/vendor/imgui"
 include "Hazel/vendor/GLFW"
 include "Hazel/vendor/Glad"
 include "Hazel/vendor/imgui"
-
+	
 project "Hazel"
 	location "Hazel"
 	kind "SharedLib"
