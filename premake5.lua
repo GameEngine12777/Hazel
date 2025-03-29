@@ -1,5 +1,6 @@
 workspace "Hazel"
 	architecture "x64"
+	startproject "Sandbox"
 	
 	configurations
 	{
@@ -9,8 +10,6 @@ workspace "Hazel"
 	}
 	
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-
-startproject "Sandbox"
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
