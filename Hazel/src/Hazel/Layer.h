@@ -11,7 +11,10 @@ namespace Hazel {
 		Layer(const std::string& name = "Layer");
 		virtual ~Layer();
 
+		/** 将图层依附到 APP 中 */
 		virtual void OnAttach() {}
+
+		/** 将图层从 App 中分离 */
 		virtual void OnDetach() {}
 
 		/** 用于处理渲染的loop */
