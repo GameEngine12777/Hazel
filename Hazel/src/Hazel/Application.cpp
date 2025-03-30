@@ -39,8 +39,8 @@ namespace Hazel
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
-			auto [x, y] = Input::GetMousePosition();
-			HZ_CORE_TRACE("{0}, {1}", x, y);
+			//auto [x, y] = Input::GetMousePosition();
+			//HZ_CORE_TRACE("{0}, {1}", x, y);
 
 			// 更新视口
 			m_Window->OnUpdate();
