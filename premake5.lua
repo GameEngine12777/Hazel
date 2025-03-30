@@ -70,7 +70,8 @@ project "Hazel"
 
 		postbuildcommands
 		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			-- Hazel.dll 在编译完成后，进行拷贝时，Sandbox 并没有开始编译，所以 Sandbox bin 文件夹还没有创建
+			("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 		}
 
 	filter "configurations:Debug"
