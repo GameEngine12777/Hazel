@@ -7,6 +7,8 @@
 #include <glm/ext/matrix_clip_space.hpp> // glm::perspective
 #include <glm/ext/scalar_constants.hpp> // glm::pi
 
+#include "imgui/imgui.h"
+
 glm::mat4 camera(float Translate, glm::vec2 const& Rotate)
 {
 	glm::mat4 Projection = glm::perspective(glm::pi<float>() * 0.25f, 4.0f / 3.0f, 0.1f, 100.f);
@@ -23,7 +25,6 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{
-		auto am = camera(5.f, glm::vec2(0.2f, 0.3f));
 	}
 
 	void OnUpdate() override
@@ -31,6 +32,13 @@ public:
 		// HZ_INFO("ExampleLayer::Update");
 		if (Hazel::Input::IsKeyPressed(HZ_KEY_TAB))
 			HZ_TRACE("Tab key is pressed (poll)!");
+	}
+
+	virtual void OnImGuiRender() override
+	{
+		////ImGui::Begin("Test");
+		////ImGui::Text("Hello World");
+		////ImGui::End();
 	}
 
 	void OnEvent(Hazel::Event& event) override
@@ -54,7 +62,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new Hazel::ImGuiLayer());
 	}
 
 	~Sandbox()

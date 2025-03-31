@@ -20,6 +20,8 @@ namespace Hazel {
 		/** 用于处理渲染的loop */
 		virtual void OnUpdate() {}
 
+		virtual void OnImGuiRender() {}
+
 		/** 用于处理事件 */
 		virtual void OnEvent(Event& event) {}
 

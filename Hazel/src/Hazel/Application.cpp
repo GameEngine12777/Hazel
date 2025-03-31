@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "Hazel/Log.h"
 
+#include "Hazel/ImGui/ImGuiLayer.h"
+
 #include "Input.h"
 
 #include <glad/glad.h>
@@ -15,10 +17,15 @@ namespace Hazel
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
+		// 创建 窗口（不同得平台实例化得对象将不同，具体看平台 Create 实现）
 		m_Window = std::unique_ptr<Window>(Window::Create());
 
 		// 绑定执行事件
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(&Application::OnEvent));
+
+		// 创建 imgui 图层
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -39,8 +46,13 @@ namespace Hazel
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
-			//auto [x, y] = Input::GetMousePosition();
-			//HZ_CORE_TRACE("{0}, {1}", x, y);
+			/**
+			* 
+			*/
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 
 			// 更新视口
 			m_Window->OnUpdate();
