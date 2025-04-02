@@ -8,6 +8,8 @@
 #include "glad/glad.h"
 #include <Hazel/Log.h>
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 namespace Hazel {
 	
 	static bool s_GLFWInitialized = false;
@@ -53,9 +55,16 @@ namespace Hazel {
 
 		// 创建 GLFW 窗口对象
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		HZ_CORE_ASSERT(status, "Failed to initialize Glad!");
+
+		// 创建自己的 渲染上下文
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
+
+		// glfwMakeContextCurrent(m_Window);
+		// int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		// HZ_CORE_ASSERT(status, "Failed to initialize Glad!");
+
+		// 设置自定义用户数据指针
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -168,7 +177,7 @@ namespace Hazel {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)
