@@ -27,7 +27,78 @@ namespace Hazel
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		
+		/**
+		* https://chatgpt.com/c/67ee026c-e4cc-8007-97b2-68af3048c6a5
+		* 创建 VAO(顶点数组对象，Vertex Array Object)
+		* VAO 的主要作用是 存储顶点属性的配置
+		* 顶点数据的格式（比如顶点坐标、颜色、法线等）
+		* VBO（顶点缓冲对象）的绑定状态
+		* EBO（索引缓冲对象）的绑定状态
+		* VAO 记录了“如何解释 VBO 里的数据”，这样就不需要每次绘制都重新配置数据格式。
+		*/
+		glGenVertexArrays(1, &m_VertexArray);
+		// 绑定 VAO
+		glBindVertexArray(m_VertexArray);
+
+		// 
+		/**
+		* 创建 VBO(顶点缓冲对象，Vertex Buffer Object)
+		* VBO（Vertex Buffer Object）是 用于存储顶点数据的 GPU 缓冲区，它的作用是将顶点数据存储在显存（VRAM）中，从而提高渲染性能。
+		* 在 OpenGL 早期，顶点数据是存储在 CPU 内存中的，每次绘制时都需要从 CPU 传输到 GPU，这样会严重影响性能。而 VBO 将数据一次性存入 GPU，然后在渲染时直接使用，大大提升了渲染效率。
+		* 存储在显存（GPU），提高渲染性能
+		* 避免 CPU-GPU 之间的频繁数据传输
+		* 支持动态更新数据（GL_DYNAMIC_DRAW）
+		*/
+		// 创建一个 VBO，并将 ID 存储在 VBO 变量中。
+		glGenBuffers(1, &m_VertexBuffer);
+		// 绑定 VBO 并设置顶点属性
+		// GL_ARRAY_BUFFER：表示当前绑定的是顶点缓冲对象（VBO）。
+		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+
+		// 三角形的 3D 坐标数据
+		float vertices[3 * 3] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f
+		};
+		/**
+		* glBufferData 用于将数据传输到 GPU：
+		* 第一个参数：GL_ARRAY_BUFFER，表示数据用于顶点数组。
+		* 第二个参数：数据大小（sizeof(vertices)）。
+		* 第三个参数：数据指针（vertices）。
+		* 第四个参数：GL_STATIC_DRAW，表示数据是静态的，只会传输一次，之后多次使用（如果数据会频繁修改，使用 GL_DYNAMIC_DRAW）。
+		*/
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+		// 设置顶点属性指针(顶点属性 0（索引 0）)
+		glEnableVertexAttribArray(0);
+		/**
+		* VBO 里的数据格式：
+		* 每个顶点包含 3 个 GL_FLOAT 值，不需要归一化，步长 3 * sizeof(float)。
+		* 0：属性索引，代表这个是“位置”属性。
+		* 3：表示每个顶点由 3 个 float 组成（x, y, z）。
+		* GL_FLOAT：数据类型。
+		* GL_FALSE：不进行归一化。
+		* 3 * sizeof(float)：步长（每个顶点占 3 个 float）。
+		* (void*)0：偏移量（数据从 0 开始）。
+		*/
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
+
+		/**
+		* 创建 EBO 并绑定索引数据(索引缓冲对象，Element Buffer Object)
+		* 生成并绑定索引缓冲区。
+		* 1.避免重复存储顶点数据，减少内存占用
+		* 2.优化绘制性能，避免重复处理相同顶点
+		* 3.允许绘制复杂的几何形状（如立方体、网格等）
+		* 
+		* 使用 glDrawElements() 结合 EBO 可以用索引方式绘制图形，而不是简单的 glDrawArrays() 按顺序绘制。
+		*/
+		glGenBuffers(1, &m_IndexBuffer);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+
+		// 提供索引数据，定义三角形如何连接顶点。
+		unsigned int indices[3] = { 0, 1, 2 };
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	}
 
 	Application::~Application()
@@ -40,32 +111,6 @@ namespace Hazel
 		{
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
-
-			/**
-			* 创建 VAO
-			*/
-			glGenVertexArrays(1, &m_VertexArray);
-			glBindVertexArray(m_VertexArray);
-
-			glGenBuffers(1, &m_VertexBuffer);
-			glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
-			float vertices[3 * 3] = {
-				-0.5f, -0.5f, 0.0f,
-				 0.5f, -0.5f, 0.0f,
-				 0.0f,  0.5f, 0.0f
-			};
-
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-
-			glGenBuffers(1, &m_IndexBuffer);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-
-			unsigned int indices[3] = { 0, 1, 2 };
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 			glBindVertexArray(m_VertexArray);
 			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
