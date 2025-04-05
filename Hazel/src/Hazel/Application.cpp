@@ -8,6 +8,8 @@
 
 #include <glad/glad.h>
 
+#include "Hazel/Renderer/Shader.h"
+
 namespace Hazel
 {
 	Application* Application::s_Instance = nullptr;
@@ -56,12 +58,13 @@ namespace Hazel
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
 
 		// 三角形的 3D 坐标数据
-		/*float vertices[3 * 3] = {
-			-0.5f, -0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			 0.0f,  0.5f, 0.0f
-		};*/
+		//float vertices[3 * 3] = {
+		//	-0.5f, -0.5f, 0.0f,
+		//	 0.5f, -0.5f, 0.0f,
+		//	 0.0f,  0.5f, 0.0f
+		//};
 
+		// 四边形 坐标
 		float vertices[] = {
 			-0.5f, -0.5f,  // 左下角
 			 0.5f, -0.5f,  // 右下角
@@ -107,9 +110,39 @@ namespace Hazel
 		* 3 * sizeof(float)：步长（每个顶点占 3 个 float）。
 		* (void*)0：偏移量（数据从 0 开始）。
 		*/
+		// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 		// 设置顶点属性指针(顶点属性 0（索引 0）)
 		glEnableVertexAttribArray(0);
+
+		std::string vertexSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) in vec3 a_Position;
+
+			out vec3 v_Position;
+
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);	
+			}
+		)";
+
+		std::string fragmentSrc = R"(
+			#version 330 core
+			
+			layout(location = 0) out vec4 color;
+
+			in vec3 v_Position;
+
+			void main()
+			{
+				color = vec4(v_Position * 10000 + 0.5, 1.0);
+			}
+		)";
+
+		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
 	}
 
 	Application::~Application()
@@ -123,6 +156,8 @@ namespace Hazel
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			m_Shader->Bind();
+
 			glBindVertexArray(m_VertexArray);
 			/**
 			* 参数解释：
@@ -131,6 +166,7 @@ namespace Hazel
 			* 3.索引数据类型
 			* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
 			*/
+			// glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, nullptr);
 			glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, nullptr);
 
 			/**

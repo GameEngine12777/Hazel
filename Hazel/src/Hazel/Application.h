@@ -7,6 +7,7 @@
 
 namespace Hazel {
 	class ImGuiLayer;
+	class Shader;
 
 	class HAZEL_API Application
 	{
@@ -38,6 +39,7 @@ namespace Hazel {
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
 
+		std::unique_ptr<Shader> m_Shader;
 	private:
 		static Application* s_Instance;
 	};
