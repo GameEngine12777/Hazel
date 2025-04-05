@@ -9,6 +9,7 @@
 #include <glad/glad.h>
 
 #include "Hazel/Renderer/Shader.h"
+#include "Hazel/Renderer/Buffer.h"
 
 namespace Hazel
 {
@@ -42,21 +43,6 @@ namespace Hazel
 		// 绑定 VAO
 		glBindVertexArray(m_VertexArray);
 
-		// 
-		/**
-		* 创建 VBO(顶点缓冲对象，Vertex Buffer Object)
-		* VBO（Vertex Buffer Object）是 用于存储顶点数据的 GPU 缓冲区，它的作用是将顶点数据存储在显存（VRAM）中，从而提高渲染性能。
-		* 在 OpenGL 早期，顶点数据是存储在 CPU 内存中的，每次绘制时都需要从 CPU 传输到 GPU，这样会严重影响性能。而 VBO 将数据一次性存入 GPU，然后在渲染时直接使用，大大提升了渲染效率。
-		* 存储在显存（GPU），提高渲染性能
-		* 避免 CPU-GPU 之间的频繁数据传输
-		* 支持动态更新数据（GL_DYNAMIC_DRAW）
-		*/
-		// 创建一个 VBO，并将 ID 存储在 VBO 变量中。
-		glGenBuffers(1, &m_VertexBuffer);
-		// 绑定 VBO 并设置顶点属性
-		// GL_ARRAY_BUFFER：表示当前绑定的是顶点缓冲对象（VBO）。
-		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
 		// 三角形的 3D 坐标数据
 		//float vertices[3 * 3] = {
 		//	-0.5f, -0.5f, 0.0f,
@@ -71,34 +57,17 @@ namespace Hazel
 			 0.5f,  0.5f,  // 右上角
 			-0.5f,  0.5f   // 左上角
 		};
-		/**
-		* glBufferData 用于将数据传输到 GPU：
-		* 第一个参数：GL_ARRAY_BUFFER，表示数据用于顶点数组。
-		* 第二个参数：数据大小（sizeof(vertices)）。
-		* 第三个参数：数据指针（vertices）。
-		* 第四个参数：GL_STATIC_DRAW，表示数据是静态的，只会传输一次，之后多次使用（如果数据会频繁修改，使用 GL_DYNAMIC_DRAW）。
-		*/
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-		/**
-		* 创建 EBO 并绑定索引数据(索引缓冲对象，Element Buffer Object)
-		* 生成并绑定索引缓冲区。
-		* 1.避免重复存储顶点数据，减少内存占用
-		* 2.优化绘制性能，避免重复处理相同顶点
-		* 3.允许绘制复杂的几何形状（如立方体、网格等）
-		* 
-		* 使用 glDrawElements() 结合 EBO 可以用索引方式绘制图形，而不是简单的 glDrawArrays() 按顺序绘制。
-		*/
-		glGenBuffers(1, &m_IndexBuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
+		// 创建 VBO 对象
+		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		// 提供索引数据，定义三角形如何连接顶点。
 		// unsigned int indices[3] = { 0, 1, 2 };
-		unsigned int indices[] = {
+		uint32_t indices[6] = {
 			0, 1, 2,  // 第一个三角形
 			2, 3, 0   // 第二个三角形
 		};
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
 		/**
 		* VBO 里的数据格式：
@@ -167,7 +136,7 @@ namespace Hazel
 			* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
 			*/
 			// glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, nullptr);
-			glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, nullptr);
+			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			/**
 			* 更新图层
