@@ -56,10 +56,17 @@ namespace Hazel
 		glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
 
 		// 三角形的 3D 坐标数据
-		float vertices[3 * 3] = {
+		/*float vertices[3 * 3] = {
 			-0.5f, -0.5f, 0.0f,
 			 0.5f, -0.5f, 0.0f,
 			 0.0f,  0.5f, 0.0f
+		};*/
+
+		float vertices[] = {
+			-0.5f, -0.5f,  // 左下角
+			 0.5f, -0.5f,  // 右下角
+			 0.5f,  0.5f,  // 右上角
+			-0.5f,  0.5f   // 左上角
 		};
 		/**
 		* glBufferData 用于将数据传输到 GPU：
@@ -69,20 +76,6 @@ namespace Hazel
 		* 第四个参数：GL_STATIC_DRAW，表示数据是静态的，只会传输一次，之后多次使用（如果数据会频繁修改，使用 GL_DYNAMIC_DRAW）。
 		*/
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-		// 设置顶点属性指针(顶点属性 0（索引 0）)
-		glEnableVertexAttribArray(0);
-		/**
-		* VBO 里的数据格式：
-		* 每个顶点包含 3 个 GL_FLOAT 值，不需要归一化，步长 3 * sizeof(float)。
-		* 0：属性索引，代表这个是“位置”属性。
-		* 3：表示每个顶点由 3 个 float 组成（x, y, z）。
-		* GL_FLOAT：数据类型。
-		* GL_FALSE：不进行归一化。
-		* 3 * sizeof(float)：步长（每个顶点占 3 个 float）。
-		* (void*)0：偏移量（数据从 0 开始）。
-		*/
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 
 		/**
 		* 创建 EBO 并绑定索引数据(索引缓冲对象，Element Buffer Object)
@@ -97,8 +90,26 @@ namespace Hazel
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
 
 		// 提供索引数据，定义三角形如何连接顶点。
-		unsigned int indices[3] = { 0, 1, 2 };
+		// unsigned int indices[3] = { 0, 1, 2 };
+		unsigned int indices[] = {
+			0, 1, 2,  // 第一个三角形
+			2, 3, 0   // 第二个三角形
+		};
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+		/**
+		* VBO 里的数据格式：
+		* 每个顶点包含 3 个 GL_FLOAT 值，不需要归一化，步长 3 * sizeof(float)。
+		* 0：属性索引，代表这个是“位置”属性。
+		* 3：表示每个顶点由 3 个 float 组成（x, y, z）。
+		* GL_FLOAT：数据类型。
+		* GL_FALSE：不进行归一化。
+		* 3 * sizeof(float)：步长（每个顶点占 3 个 float）。
+		* (void*)0：偏移量（数据从 0 开始）。
+		*/
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+		// 设置顶点属性指针(顶点属性 0（索引 0）)
+		glEnableVertexAttribArray(0);
 	}
 
 	Application::~Application()
@@ -113,7 +124,14 @@ namespace Hazel
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
+			/**
+			* 参数解释：
+			* 1.绘制图元类型（决定如何连接顶点）
+			* 2.要绘制的索引数量
+			* 3.索引数据类型
+			* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
+			*/
+			glDrawElements(GL_TRIANGLE_STRIP, 6, GL_UNSIGNED_INT, nullptr);
 
 			/**
 			* 更新图层
