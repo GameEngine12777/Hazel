@@ -15,6 +15,27 @@ namespace Hazel
 {
 	Application* Application::s_Instance = nullptr;
 
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+		case Hazel::ShaderDataType::Float:    return GL_FLOAT;
+		case Hazel::ShaderDataType::Float2:   return GL_FLOAT;
+		case Hazel::ShaderDataType::Float3:   return GL_FLOAT;
+		case Hazel::ShaderDataType::Float4:   return GL_FLOAT;
+		case Hazel::ShaderDataType::Mat3:     return GL_FLOAT;
+		case Hazel::ShaderDataType::Mat4:     return GL_FLOAT;
+		case Hazel::ShaderDataType::Int:      return GL_INT;
+		case Hazel::ShaderDataType::Int2:     return GL_INT;
+		case Hazel::ShaderDataType::Int3:     return GL_INT;
+		case Hazel::ShaderDataType::Int4:     return GL_INT;
+		case Hazel::ShaderDataType::Bool:     return GL_BOOL;
+		}
+
+		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		return 0;
+	}
+
 	Application::Application()
 	{
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -43,57 +64,66 @@ namespace Hazel
 		// 绑定 VAO
 		glBindVertexArray(m_VertexArray);
 
-		// 三角形的 3D 坐标数据
-		//float vertices[3 * 3] = {
-		//	-0.5f, -0.5f, 0.0f,
-		//	 0.5f, -0.5f, 0.0f,
-		//	 0.0f,  0.5f, 0.0f
-		//};
-
-		// 四边形 坐标
-		float vertices[] = {
-			-0.5f, -0.5f,  // 左下角
-			 0.5f, -0.5f,  // 右下角
-			 0.5f,  0.5f,  // 右上角
-			-0.5f,  0.5f   // 左上角
+		float vertices[3 * 7] = {
+			-0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f, 1.0f,
+			 0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f, 1.0f,
+			 0.0f,  0.5f, 0.0f, 0.f, 0.f, 1.f, 1.0f
 		};
 
 		// 创建 VBO 对象
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 
-		// unsigned int indices[3] = { 0, 1, 2 };
-		uint32_t indices[6] = {
-			0, 1, 2,  // 第一个三角形
-			2, 3, 0   // 第二个三角形
-		};
+		{
+			BufferLayout layout = {
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color" }
+			};
 
+			m_VertexBuffer->SetLayout(layout);
+		}
+
+		uint32_t index = 0;
+		const auto& layout = m_VertexBuffer->GetLayout();
+		for (const auto& element : layout)
+		{
+			// 设置顶点属性指针(顶点属性 0（索引 0）)
+			glEnableVertexAttribArray(index);
+
+			/**
+			* VBO 里的数据格式：
+			* 1：属性索引，代表这个是“位置”属性。
+			* 2：表示每个顶点由 3 个 float 组成（x, y, z）。
+			* 3：数据类型。
+			* 4：不进行归一化。
+			* 5：步长（每个顶点占 3 个 float）。
+			* 6：偏移量（数据从 0 开始）。
+			*/
+			glVertexAttribPointer(index,
+				element.GetComponentCount(),
+				ShaderDataTypeToOpenGLBaseType(element.Type),
+				element.Normalized ? GL_TRUE : GL_FALSE,
+				layout.GetStride(),
+				(const void*)element.Offset);
+
+			index++;
+		}
+
+		unsigned int indices[3] = { 0, 1, 2 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
-
-		/**
-		* VBO 里的数据格式：
-		* 每个顶点包含 3 个 GL_FLOAT 值，不需要归一化，步长 3 * sizeof(float)。
-		* 0：属性索引，代表这个是“位置”属性。
-		* 3：表示每个顶点由 3 个 float 组成（x, y, z）。
-		* GL_FLOAT：数据类型。
-		* GL_FALSE：不进行归一化。
-		* 3 * sizeof(float)：步长（每个顶点占 3 个 float）。
-		* (void*)0：偏移量（数据从 0 开始）。
-		*/
-		// glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
-		// 设置顶点属性指针(顶点属性 0（索引 0）)
-		glEnableVertexAttribArray(0);
 
 		std::string vertexSrc = R"(
 			#version 330 core
 			
 			layout(location = 0) in vec3 a_Position;
+			layout(location = 1) in vec4 a_Color;
 
 			out vec3 v_Position;
+			out vec4 v_Color;
 
 			void main()
 			{
 				v_Position = a_Position;
+				v_Color = a_Color;
 				gl_Position = vec4(a_Position, 1.0);	
 			}
 		)";
@@ -104,10 +134,12 @@ namespace Hazel
 			layout(location = 0) out vec4 color;
 
 			in vec3 v_Position;
+			in vec4 v_Color;
 
 			void main()
 			{
-				color = vec4(v_Position * 10000 + 0.5, 1.0);
+				// color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				color = v_Color;
 			}
 		)";
 
