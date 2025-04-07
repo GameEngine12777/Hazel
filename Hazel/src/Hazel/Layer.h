@@ -9,7 +9,7 @@ namespace Hazel {
 	{
 	public:
 		Layer(const std::string& name = "Layer");
-		virtual ~Layer();
+		virtual ~Layer() = default;
 
 		/** 将图层依附到 APP 中 */
 		virtual void OnAttach() {}
