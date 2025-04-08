@@ -6,7 +6,7 @@
 
 #include "Input.h"
 
-#include <glad/glad.h>
+#include "Hazel/Renderer/Renderer.h"
 
 #include "Hazel/Renderer/Shader.h"
 #include "Hazel/Renderer/Buffer.h"
@@ -15,27 +15,6 @@
 namespace Hazel
 {
 	Application* Application::s_Instance = nullptr;
-
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-		case Hazel::ShaderDataType::Float:    return GL_FLOAT;
-		case Hazel::ShaderDataType::Float2:   return GL_FLOAT;
-		case Hazel::ShaderDataType::Float3:   return GL_FLOAT;
-		case Hazel::ShaderDataType::Float4:   return GL_FLOAT;
-		case Hazel::ShaderDataType::Mat3:     return GL_FLOAT;
-		case Hazel::ShaderDataType::Mat4:     return GL_FLOAT;
-		case Hazel::ShaderDataType::Int:      return GL_INT;
-		case Hazel::ShaderDataType::Int2:     return GL_INT;
-		case Hazel::ShaderDataType::Int3:     return GL_INT;
-		case Hazel::ShaderDataType::Int4:     return GL_INT;
-		case Hazel::ShaderDataType::Bool:     return GL_BOOL;
-		}
-
-		HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
 
 	Application::Application()
 	{
@@ -163,28 +142,18 @@ namespace Hazel
 	{
 		while (m_Running)
 		{
-			glClearColor(1, 0, 1, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+			RenderCommand::Clear();
 
-			m_Shader->Bind();
-
-			/**
-			* 参数解释：
-			* 1.绘制图元类型（决定如何连接顶点）
-			* 2.要绘制的索引数量
-			* 3.索引数据类型
-			* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
-			*/
-			// glDrawElements(GL_TRIANGLE_STRIP, 3, GL_UNSIGNED_INT, nullptr);
-			// glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::BeginScene();
 
 			m_BlueShader->Bind();
-			m_SquareVA->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_SquareVA);
 
 			m_Shader->Bind();
-			m_VertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
 
 			/**
 			* 更新图层
