@@ -5,7 +5,9 @@
 struct GLFWwindow;
 
 namespace Hazel {
-
+	/**
+	* 初始化 OpenGL 得渲染上下文
+	*/
 	class OpenGLContext : public GraphicsContext
 	{
 	public:

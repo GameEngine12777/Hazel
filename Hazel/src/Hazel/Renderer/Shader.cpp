@@ -2,6 +2,7 @@
 #include "Shader.h"
 
 #include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Hazel {
 
@@ -122,6 +123,15 @@ namespace Hazel {
 	void Shader::Unbind() const
 	{
 		glUseProgram(0);
+	}
+
+	void Shader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix)
+	{
+		// 获取在 GLSL 中声明得 name 变量地址
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+
+		// 将值 matrix 传递给着色器中得 name 变量
+		glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 }

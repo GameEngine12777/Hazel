@@ -141,6 +141,10 @@ namespace Hazel {
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
+		/**
+		* @param vertices 顶点数组
+		* @param size 数据长度
+		*/
 		static VertexBuffer* Create(float* vertices, uint32_t size);
 	};
 
@@ -161,6 +165,10 @@ namespace Hazel {
 		/** 返回索引数量 */
 		virtual uint32_t GetCount() const = 0;
 
+		/**
+		* @param indices 索引数据
+		* @param size 数据长度
+		*/
 		static IndexBuffer* Create(uint32_t* indices, uint32_t size);
 	};
 
