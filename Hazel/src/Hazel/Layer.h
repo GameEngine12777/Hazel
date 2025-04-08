@@ -2,6 +2,7 @@
 
 #include "Hazel/Core.h"
 #include "Hazel/Events/Event.h"
+#include "Hazel/Core/Timestep.h"
 
 namespace Hazel {
 
@@ -18,7 +19,7 @@ namespace Hazel {
 		virtual void OnDetach() {}
 
 		/** 用于处理渲染的loop */
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep ts) {}
 
 		virtual void OnImGuiRender() {}
 

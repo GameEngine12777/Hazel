@@ -5,8 +5,6 @@
 #include "Hazel/Events/ApplicationEvent.h"
 #include "LayerStack.h"
 
-#include "Hazel/Renderer/OrthographicCamera.h"
-
 namespace Hazel {
 	class ImGuiLayer;
 	class Shader;
@@ -14,7 +12,7 @@ namespace Hazel {
 	class IndexBuffer;
 	class VertexArray;
 
-	class HAZEL_API Application
+	class Application
 	{
 	public:
 		Application();
@@ -37,18 +35,13 @@ namespace Hazel {
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-		std::shared_ptr<Shader> m_BlueShader;
-		std::shared_ptr<VertexArray> m_SquareVA;
-
-		OrthographicCamera m_Camera;
+		float m_LastFrameTime = 0.0f;
 	private:
 		static Application* s_Instance;
 	};
