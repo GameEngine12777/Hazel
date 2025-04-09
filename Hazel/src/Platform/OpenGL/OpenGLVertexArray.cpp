@@ -53,12 +53,11 @@ namespace Hazel {
 		glBindVertexArray(m_RendererID);
 		vertexBuffer->Bind();
 
-		uint32_t index = 0;
 		const auto& layout = vertexBuffer->GetLayout();
 		for (const auto& element : layout)
 		{
 			// 设置顶点属性指针(顶点属性 0（索引 0）)
-			glEnableVertexAttribArray(index);
+			glEnableVertexAttribArray(m_VertexBufferIndex);
 
 			/**
 			* VBO 里的数据格式：
@@ -69,13 +68,13 @@ namespace Hazel {
 			* 5：步长（每个顶点占 3 个 float）。
 			* 6：偏移量（数据从 0 开始）。
 			*/
-			glVertexAttribPointer(index,
+			glVertexAttribPointer(m_VertexBufferIndex,
 				element.GetComponentCount(),
 				ShaderDataTypeToOpenGLBaseType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
 				(const void*)element.Offset);
-			index++;
+			m_VertexBufferIndex++;
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);
