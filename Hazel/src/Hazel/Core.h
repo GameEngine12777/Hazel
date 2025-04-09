@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef HZ_PLATFORM_WINDOWS
 	#if HZ_DYNAMIC_LINK
 		#ifdef HZ_BUILD_DLL
