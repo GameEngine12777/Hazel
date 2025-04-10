@@ -13,7 +13,7 @@ workspace "Hazel"
 	{
 		"MultiProcessorCompile"
 	}
-	
+
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories relative to root folder (solution directory)
@@ -122,6 +122,7 @@ project "Sandbox"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/assets/**.glsl",
 	}
 
 	includedirs
