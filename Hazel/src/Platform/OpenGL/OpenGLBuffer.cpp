@@ -74,10 +74,10 @@ namespace Hazel {
 		* 使用 glDrawElements() 结合 EBO 可以用索引方式绘制图形，而不是简单的 glDrawArrays() 按顺序绘制。
 		*/
 		glCreateBuffers(1, &m_RendererID);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 
 		// 提供索引数据，定义三角形如何连接顶点。
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 	}
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
