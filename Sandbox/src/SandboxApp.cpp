@@ -203,7 +203,7 @@ public:
 		std::dynamic_pointer_cast<Hazel::OpenGLShader>(m_TextureShader)->UploadUniformInt("u_Texture", 0);
 
 		m_Texture = Hazel::Texture2D::Create("assets/textures/IMG_20220707_191336.jpg");
-		m_Texture1 = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
+		m_ChernoLogoTexture = Hazel::Texture2D::Create("assets/textures/ChernoLogo.png");
 	}
 
 	void OnUpdate(Hazel::Timestep ts) override
@@ -251,9 +251,11 @@ public:
 		}
 
 		// 绑定到指定的纹理单元
-		m_Texture->Bind(0);
-		m_Texture1->Bind(11);
+		m_Texture->Bind();
 		// 提交绘制，使用 glm::scale 放大了模型 1.5 倍。
+		Hazel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+
+		m_ChernoLogoTexture->Bind();
 		Hazel::Renderer::Submit(m_TextureShader, m_SquareVA, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 		Hazel::Renderer::EndScene();
@@ -277,8 +279,7 @@ private:
 	Hazel::Ref<Hazel::Shader> m_FlatColorShader, m_TextureShader;
 	Hazel::Ref<Hazel::VertexArray> m_SquareVA;
 
-	Hazel::Ref<Hazel::Texture2D> m_Texture;
-	Hazel::Ref<Hazel::Texture2D> m_Texture1;
+	Hazel::Ref<Hazel::Texture2D> m_Texture, m_ChernoLogoTexture;;
 
 	Hazel::OrthographicCamera m_Camera;
 	glm::vec3 m_CameraPosition;

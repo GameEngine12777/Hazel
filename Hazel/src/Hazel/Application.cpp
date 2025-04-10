@@ -29,6 +29,8 @@ namespace Hazel
 		// 绑定执行事件
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(&Application::OnEvent));
 
+		Renderer::Init();
+
 		// 创建 imgui 图层
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
