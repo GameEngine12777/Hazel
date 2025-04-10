@@ -48,8 +48,11 @@ namespace Hazel
 			* 更新图层
 			* 处理渲染时，应该先画最远的 Layer，再画最近的 Layer
 			*/
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate(timestep);
+			if (!m_Minimized)
+			{
+				for (Layer* layer : m_LayerStack)
+					layer->OnUpdate(timestep);
+			}
 
 			/**
 			* 
@@ -75,6 +78,7 @@ namespace Hazel
 		*/
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(HZ_BIND_EVENT_FN(&Application::OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(&Application::OnWindowResize));
 
 		//if (e.GetEventType() == Hazel::EventType::KeyPressed)
 		//{
@@ -119,5 +123,19 @@ namespace Hazel
 	{
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 }
