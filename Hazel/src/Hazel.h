@@ -27,6 +27,4 @@
 #include "Hazel/Renderer/OrthographicCamera.h"
 // -----------------------------------
 
-// --- Entry Pint -------------------------
-#include "Hazel/Core/EntryPoint.h"
 // ----------------------------------------

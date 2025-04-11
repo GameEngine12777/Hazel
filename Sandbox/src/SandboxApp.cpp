@@ -1,4 +1,5 @@
 #include <Hazel.h>
+#include "Hazel/Core/EntryPoint.h"
 
 //#include <glm/vec3.hpp> // glm::vec3
 //#include <glm/vec4.hpp> // glm::vec4
@@ -23,6 +24,12 @@
 //	return Projection * View * Model;
 //}
 
+#include "Sandbox2D.h"
+
+
+/**
+* 示例代码
+*/
 class ExampleLayer : public Hazel::Layer
 {
 public:
@@ -30,7 +37,7 @@ public:
 		: Layer("Example")
 		, m_CameraController(1280.0f / 720.0f, true)
 	{
-		m_VertexArray.reset(Hazel::VertexArray::Create());
+		m_VertexArray = Hazel::VertexArray::Create();
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f, 1.f,
@@ -52,7 +59,7 @@ public:
 		indexBuffer.reset(Hazel::IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 		m_VertexArray->SetIndexBuffer(indexBuffer);
 
-		m_SquareVA.reset(Hazel::VertexArray::Create());
+		m_SquareVA = Hazel::VertexArray::Create();
 
 		//float squareVertices[3 * 4] = {
 		//	-0.75f, -0.75f, 0.0f,
@@ -240,12 +247,17 @@ private:
 	glm::vec3 m_SquareColor = { 0.2f, 0.3f, 0.8f };
 };
 
+
+/**
+* 
+*/
 class Sandbox : public Hazel::Application
 {
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		// PushLayer(new ExampleLayer());
+		PushLayer(new Sandbox2D());
 	}
 
 	~Sandbox()
