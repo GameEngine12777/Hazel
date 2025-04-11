@@ -48,12 +48,12 @@ namespace Hazel {
 		uint32_t Size;
 
 		/** 偏移量（layout中的位置） */
-		uint32_t Offset;
+		size_t Offset;
 
 		/** 是否需要归一化（比如颜色可能存为0-255，归一化为0.0-1.0） */
 		bool Normalized;
 
-		BufferElement() {}
+		BufferElement() = default;
 
 		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false)
 			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized)
@@ -110,7 +110,7 @@ namespace Hazel {
 		/** 遍历元素，自动计算偏移和总大小。 */
 		void CalculateOffsetsAndStride()
 		{
-			uint32_t offset = 0;
+			size_t offset = 0;
 			m_Stride = 0;
 			for (auto& element : m_Elements)
 			{
