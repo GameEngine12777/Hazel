@@ -34,7 +34,7 @@ namespace Hazel {
 
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 
-		/** In degrees, in the anti-clockwise direction */
+		/** 以度为单位，逆时针方向 */
 		float m_CameraRotation = 0.0f;
 		float m_CameraTranslationSpeed = 5.0f, m_CameraRotationSpeed = 180.0f;
 	};
