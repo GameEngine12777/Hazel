@@ -6,6 +6,7 @@ namespace Hazel {
 
 	/**
 	* 正交投影摄像机
+	* 存储视口 VP 矩阵
 	*/
 	class OrthographicCamera
 	{

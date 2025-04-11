@@ -43,6 +43,17 @@ namespace Hazel {
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+		/**
+		* 设置纹理对象在 S（横向） 和 T（纵向） 方向上的环绕（Wrap）模式。
+		* 
+		* GL_REPEAT:			环绕方式之一，表示当纹理坐标超出 [0,1] 范围时，纹理图像会重复。
+		* GL_MIRRORED_REPEAT:	镜像重复纹理
+		* GL_CLAMP_TO_EDGE:		超出部分贴边缘的颜色
+		* GL_CLAMP_TO_BORDER:	超出部分贴指定的边框颜色
+		*/
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 		// 将图像数据上传到显存中
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 
