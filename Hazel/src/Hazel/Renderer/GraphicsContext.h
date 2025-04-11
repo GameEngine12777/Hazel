@@ -13,6 +13,8 @@ namespace Hazel {
 
 		/** 交换缓存 */
 		virtual void SwapBuffers() = 0;
+
+		static Scope<GraphicsContext> Create(void* window);
 	};
 
 }

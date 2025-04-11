@@ -1,10 +1,11 @@
 #include "hzpch.h"
 #include "Hazel/Core/Log.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
+
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 namespace Hazel {
-	std::shared_ptr<spdlog::logger> Log::s_CoreLogger = nullptr;
-	std::shared_ptr<spdlog::logger> Log::s_ClientLogger = nullptr;
+	Ref<spdlog::logger> Log::s_CoreLogger = nullptr;
+	Ref<spdlog::logger> Log::s_ClientLogger = nullptr;
 
 	void Log::Init()
 	{

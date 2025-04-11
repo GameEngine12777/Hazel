@@ -24,7 +24,7 @@ namespace Hazel
 		s_Instance = this;
 
 		// 创建 窗口（不同得平台实例化得对象将不同，具体看平台 Create 实现）
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = Window::Create();
 
 		// 绑定执行事件
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(&Application::OnEvent));
@@ -34,6 +34,11 @@ namespace Hazel
 		// 创建 imgui 图层
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+	}
+
+	Application::~Application()
+	{
+		Renderer::Shutdown();
 	}
 
 	void Application::Run()

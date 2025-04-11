@@ -27,10 +27,10 @@ namespace Hazel {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
 	{
 		// @TODO 当下这步由外部调用，后期看情况是否需要移入
-		// vertexArray->Bind();
+		vertexArray->Bind();
 
 		/**
 		* 参数解释：
