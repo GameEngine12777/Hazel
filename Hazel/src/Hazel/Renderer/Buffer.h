@@ -145,7 +145,7 @@ namespace Hazel {
 		* @param vertices 顶点数组
 		* @param size 数据长度
 		*/
-		static VertexBuffer* Create(float* vertices, uint32_t size);
+		static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
 	};
 
 	/**
@@ -169,7 +169,7 @@ namespace Hazel {
 		* @param indices 索引数据
 		* @param size 数据长度
 		*/
-		static IndexBuffer* Create(uint32_t* indices, uint32_t size);
+		static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t size);
 	};
 
 }
