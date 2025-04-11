@@ -39,7 +39,15 @@ namespace Hazel {
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
 
-		// 设置纹理的采样参数（缩小时线性插值，放大时最近邻采样）。
+		/**
+		* 设置纹理的采样参数（缩小时线性插值，放大时最近邻采样）。
+		* 
+		* GL_TEXTURE_MIN_FILTER: 当纹理被缩小时（贴图变小，用更少的像素来表现更多的纹理）使用的过滤方式。
+		* GL_TEXTURE_MAG_FILTER: 当纹理被放大时（贴图变大，用更多的像素来表现更少的纹理）使用的过滤方式。
+		* 
+		* GL_LINEAR: 线性插值，会平滑混合周围像素，产生模糊但平滑的效果。
+		* GL_NEAREST: 最近点采样，直接选择最靠近的一个像素，结果清晰但可能有像素颗粒感（马赛克效果）。
+		*/
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 

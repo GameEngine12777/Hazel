@@ -29,6 +29,9 @@ namespace Hazel {
 
 	void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
 	{
+		// @TODO 当下这步由外部调用，后期看情况是否需要移入
+		// vertexArray->Bind();
+
 		/**
 		* 参数解释：
 		* 1.绘制图元类型（决定如何连接顶点）

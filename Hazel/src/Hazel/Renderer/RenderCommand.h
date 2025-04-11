@@ -4,6 +4,11 @@
 
 namespace Hazel {
 
+	/**
+	* 渲染指令
+	* Renderer/Renderer2D 等都统一调用这个模块进行渲染指令下发
+	* RenderCommand 中包含了我们自己封装的 RendererAPI, 而 RendererAPI 中则又封装了不同平台的渲染命令
+	*/
 	class RenderCommand
 	{
 	public:
@@ -27,6 +32,9 @@ namespace Hazel {
 			s_RendererAPI->Clear();
 		}
 
+		/**
+		* 绘制
+		*/
 		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
 		{
 			s_RendererAPI->DrawIndexed(vertexArray);

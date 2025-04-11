@@ -6,6 +6,9 @@
 
 namespace Hazel {
 
+	/**
+	* 对不同平台的渲染指令进行封装
+	*/
 	class RendererAPI
 	{
 	public:

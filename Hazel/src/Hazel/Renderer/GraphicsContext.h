@@ -2,6 +2,10 @@
 
 namespace Hazel {
 
+	/**
+	* 图形上下文
+	* 通过多态的行为后期封装不同平台的图形上下文
+	*/
 	class GraphicsContext
 	{
 	public:

@@ -4,6 +4,9 @@
 
 namespace Hazel {
 
+	/**
+	* 输入需要保证全局仅存在一份
+	*/
 	class HAZEL_API Input
 	{
 	protected:
