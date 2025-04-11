@@ -6,6 +6,8 @@
 namespace Hazel {
 	void OpenGLRendererAPI::Init()
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -29,6 +31,8 @@ namespace Hazel {
 
 	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
 	{
+		HZ_PROFILE_FUNCTION();
+
 		// @TODO 当下这步由外部调用，后期看情况是否需要移入
 		vertexArray->Bind();
 

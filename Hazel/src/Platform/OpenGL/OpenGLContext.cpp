@@ -15,6 +15,8 @@ namespace Hazel {
 
 	void OpenGLContext::Init()
 	{
+		HZ_PROFILE_FUNCTION();
+
 		// m_WindowHandle（一个 GLFW 窗口对象）成为当前线程的 OpenGL 上下文。
 		glfwMakeContextCurrent(m_WindowHandle);
 		// 加载 OpenGL 函数
@@ -38,6 +40,8 @@ namespace Hazel {
 
 	void OpenGLContext::SwapBuffers()
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 

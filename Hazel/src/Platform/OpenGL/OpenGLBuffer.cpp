@@ -11,6 +11,8 @@ namespace Hazel {
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
+		HZ_PROFILE_FUNCTION();
+
 		/**
 		* 创建 VBO(顶点缓冲对象，Vertex Buffer Object)
 		* VBO（Vertex Buffer Object）是 用于存储顶点数据的 GPU 缓冲区，它的作用是将顶点数据存储在显存（VRAM）中，从而提高渲染性能。
@@ -47,16 +49,22 @@ namespace Hazel {
 
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLVertexBuffer::Unbind() const
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
@@ -67,6 +75,8 @@ namespace Hazel {
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 		: m_Count(count)
 	{
+		HZ_PROFILE_FUNCTION();
+
 		/**
 		* 创建 EBO 并绑定索引数据(索引缓冲对象，Element Buffer Object)
 		* 生成并绑定索引缓冲区。
@@ -82,16 +92,22 @@ namespace Hazel {
 
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glDeleteBuffers(1, &m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Bind() const
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 	}
 
 	void OpenGLIndexBuffer::Unbind() const
 	{
+		HZ_PROFILE_FUNCTION();
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
