@@ -40,6 +40,7 @@ namespace Hazel {
 		* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
 		*/
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }
