@@ -1,17 +1,17 @@
 #include "hzpch.h"
-#include "Application.h"
+#include "Hazel/Core/Application.h"
 #include "Hazel/Core/Log.h"
 
 #include "Hazel/ImGui/ImGuiLayer.h"
 
-#include "Input.h"
+#include "Hazel/Core/Input.h"
 
 #include "Hazel/Renderer/Renderer.h"
 
 #include "Hazel/Renderer/Shader.h"
 #include "Hazel/Renderer/Buffer.h"
 #include "Hazel/Renderer/VertexArray.h"
-#include "KeyCodes.h"
+#include "Hazel/Core/KeyCodes.h"
 #include <GLFW/glfw3.h>
 
 namespace Hazel

@@ -1,11 +1,9 @@
 #include "hzpch.h"
-#include "OpenGLContext.h"
+#include "Platform/OpenGL/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <GL/GL.h>
-
-#include "Hazel/Core/Log.h"
 
 namespace Hazel {
 
