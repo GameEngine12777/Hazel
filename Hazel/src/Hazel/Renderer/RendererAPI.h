@@ -28,7 +28,7 @@ namespace Hazel {
 		/**
 		* @param vertexArray 需要绘制得 VAO 数据
 		*/
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount = 0) = 0;
 
 		inline static API GetAPI() { return s_API; }
 	private:

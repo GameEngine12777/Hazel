@@ -58,12 +58,14 @@ namespace Hazel {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
-	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray)
+	void OpenGLRendererAPI::DrawIndexed(const Ref<VertexArray>& vertexArray, uint32_t indexCount)
 	{
 		HZ_PROFILE_FUNCTION();
 
 		// @TODO 当下这步由外部调用，后期看情况是否需要移入
 		vertexArray->Bind();
+
+		uint32_t count = indexCount ? vertexArray->GetIndexBuffer()->GetCount() : indexCount;
 
 		/**
 		* 参数解释：
@@ -72,7 +74,7 @@ namespace Hazel {
 		* 3.索引数据类型
 		* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
 		*/
-		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
