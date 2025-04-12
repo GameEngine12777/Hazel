@@ -16,7 +16,7 @@ void Sandbox2D::OnAttach()
 {
 	HZ_PROFILE_FUNCTION();
 
-	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/IMG_20220707_191336.jpg");
+	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 }
 
 void Sandbox2D::OnDetach()
@@ -44,7 +44,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 		// Hazel::Renderer2D::DrawRotatedQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, glm::radians(-45.0f), { 0.8f, 0.2f, 0.3f, 1.0f });
 		Hazel::Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		Hazel::Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
-		// Hazel::Renderer2D::DrawQuad({ 0.0f, 0.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
+		Hazel::Renderer2D::DrawQuad({ -5.0f, -5.0f, -0.1f }, { 10.0f, 10.0f }, m_CheckerboardTexture, 10.0f);
 		Hazel::Renderer2D::EndScene();
 	}
 }
