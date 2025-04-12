@@ -115,7 +115,7 @@ namespace Hazel
 		* 事件传递
 		* 处理事件时正好相反，因为最上面一层的Layer才应该是接受event的对象
 		*/
-		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend();)
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 		{
 			(*it)->OnEvent(e);
 
