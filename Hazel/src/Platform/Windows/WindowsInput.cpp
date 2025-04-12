@@ -1,24 +1,24 @@
 #include "hzpch.h"
 #include "Platform/Windows/WindowsInput.h"
 
-#include "Hazel/Core/Application.h"
 #include <GLFW/glfw3.h>
+
+#include "Hazel/Core/Application.h"
+
 
 namespace Hazel {
 
-	Scope<Input> Input::s_Instance = CreateScope<WindowsInput>();
-
-	bool WindowsInput::IsKeyPressedImpl(int keycode)
+	bool WindowsInput::IsKeyPressedImpl(KeyCode key)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetKey(window, keycode);
+		auto state = glfwGetKey(window, static_cast<int32_t>(key));
 		return state == GLFW_PRESS || state == GLFW_REPEAT;
 	}
 
-	bool WindowsInput::IsMouseButtonPressedImpl(int button)
+	bool WindowsInput::IsMouseButtonPressedImpl(MouseCode mouse)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
-		auto state = glfwGetMouseButton(window, button);
+		auto state = glfwGetMouseButton(window, static_cast<int32_t>(mouse));
 		return state == GLFW_PRESS;
 	}
 
