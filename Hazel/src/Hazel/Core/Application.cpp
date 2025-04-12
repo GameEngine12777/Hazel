@@ -115,18 +115,17 @@ namespace Hazel
 		* 事件传递
 		* 处理事件时正好相反，因为最上面一层的Layer才应该是接受event的对象
 		*/
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend();)
 		{
-			/**
-			* 反向传递事件
-			*/
-			(*--it)->OnEvent(e);
+			(*it)->OnEvent(e);
 
 			/**
 			* 如果当前图层消耗掉了事件，将不再向下传递
 			*/
 			if (e.Handled)
+			{
 				break;
+			}
 		}
 	}
 
