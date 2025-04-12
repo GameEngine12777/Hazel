@@ -1,13 +1,14 @@
 #include "hzpch.h"
-#include "Platform/Windows/WindowsWindow.h"
+
+#include <glad/glad.h>
 
 #include "Hazel/Events/ApplicationEvent.h"
 #include "Hazel/Events/MouseEvent.h"
 #include "Hazel/Events/KeyEvent.h"
-
-#include "glad/glad.h"
+#include "Hazel/Renderer/Renderer.h"
 #include "Hazel/Core/Log.h"
 
+#include "Platform/Windows/WindowsWindow.h"
 #include "Platform/OpenGL/OpenGLContext.h"
 
 namespace Hazel {
@@ -60,6 +61,11 @@ namespace Hazel {
 
 		{
 			HZ_PROFILE_SCOPE("glfwCreateWindow");
+
+		#if defined(HZ_DEBUG)
+			if (Renderer::GetAPI() == RendererAPI::API::OpenGL)
+				glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+		#endif
 
 			// 创建 GLFW 窗口对象
 			m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
