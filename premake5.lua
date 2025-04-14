@@ -105,6 +105,58 @@ project "Hazel"
 		optimize "on"
 
 
+project "Hazel-Editor"
+	location "Hazel-Editor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{
+		"%{prj.name}/src/**.h",
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/assets/**.glsl",
+	}
+
+	includedirs
+	{
+		"Hazel/vendor/spdlog/include",
+		"Hazel/src",
+		"Hazel/vendor",
+		"%{IncludeDir.glm}"
+	}
+
+	links
+	{
+		"Hazel"
+	}
+
+	filter "system:windows"
+		systemversion "latest"
+		
+	filter "configurations:Debug"
+		defines "HZ_DEBUG"
+		buildoptions "/utf-8"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "HZ_RELEASE"
+		buildoptions "/utf-8"
+		runtime "Release"
+		optimize "on"
+
+	filter "configurations:Dist"
+		defines "HZ_DIST"
+		buildoptions "/utf-8"
+		runtime "Release"
+		optimize "on"
+	
+
 
 project "Sandbox"
 	location "Sandbox"
