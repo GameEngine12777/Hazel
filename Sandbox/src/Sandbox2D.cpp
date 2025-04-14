@@ -18,6 +18,11 @@ void Sandbox2D::OnAttach()
 
 	m_CheckerboardTexture = Hazel::Texture2D::Create("assets/textures/Checkerboard.png");
 	m_T1 = Hazel::Texture2D::Create("assets/textures/IMG_20220707_191336.jpg");
+
+	Hazel::FramebufferSpecification fbSpec;
+	fbSpec.Width = 1280;
+	fbSpec.Height = 720;
+	m_Framebuffer = Hazel::Framebuffer::Create(fbSpec);
 }
 
 void Sandbox2D::OnDetach()
@@ -35,6 +40,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 	// Render
 	{
 		HZ_PROFILE_SCOPE("Renderer Prep");
+		m_Framebuffer->Bind();
 		Hazel::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		Hazel::RenderCommand::Clear();
 	}
@@ -60,6 +66,7 @@ void Sandbox2D::OnUpdate(Hazel::Timestep ts)
 			}
 		}
 		Hazel::Renderer2D::EndScene();
+		m_Framebuffer->Unbind();
 	}
 }
 
@@ -68,7 +75,7 @@ void Sandbox2D::OnImGuiRender()
 	HZ_PROFILE_FUNCTION();
 
 	// Note: Switch this to true to enable dockspace
-	static bool dockingEnabled = false;
+	static bool dockingEnabled = true;
 	if (dockingEnabled)
 	{
 		static bool dockspaceOpen = true;
@@ -142,7 +149,7 @@ void Sandbox2D::OnImGuiRender()
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
 		uint32_t textureID = m_T1->GetRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f }, ImVec2{ 0.f, 1.f }, ImVec2{ 1.f, 0.f });
+		ImGui::Image((void*)textureID, ImVec2{ 1280, 720 }, ImVec2{ 0.f, 1.f }, ImVec2{ 1.f, 0.f });
 		ImGui::End();
 
 		ImGui::End();
@@ -161,7 +168,7 @@ void Sandbox2D::OnImGuiRender()
 		ImGui::ColorEdit4("Square Color", glm::value_ptr(m_SquareColor));
 
 		uint32_t textureID = m_T1->GetRendererID();
-		ImGui::Image((void*)textureID, ImVec2{ 256.0f, 256.0f }, ImVec2{ 0.f, 1.f }, ImVec2{ 1.f, 0.f });
+		ImGui::Image((void*)textureID, ImVec2{ 1280, 720 }, ImVec2{ 0.f, 1.f }, ImVec2{ 1.f, 0.f });
 		ImGui::End();
 	}
 }
