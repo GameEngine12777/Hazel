@@ -66,25 +66,61 @@ namespace Hazel {
 		const auto& layout = vertexBuffer->GetLayout();
 		for (const auto& element : layout)
 		{
-			// 设置顶点属性指针(顶点属性 0（索引 0）)
-			glEnableVertexAttribArray(m_VertexBufferIndex);
 
-			/**
-			* VBO 里的数据格式：
-			* 1：属性索引，代表这个是“位置”属性。
-			* 2：表示每个顶点由 3 个 float 组成（x, y, z）。
-			* 3：数据类型。
-			* 4：不进行归一化。
-			* 5：步长（每个顶点占 3 个 float）。
-			* 6：偏移量（数据从 0 开始）。
-			*/
-			glVertexAttribPointer(m_VertexBufferIndex,
-				element.GetComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				layout.GetStride(),
-				(const void*)element.Offset);
-			m_VertexBufferIndex++;
+			switch (element.Type)
+			{
+			case ShaderDataType::Float:
+			case ShaderDataType::Float2:
+			case ShaderDataType::Float3:
+			case ShaderDataType::Float4:
+			case ShaderDataType::Int:
+			case ShaderDataType::Int2:
+			case ShaderDataType::Int3:
+			case ShaderDataType::Int4:
+			case ShaderDataType::Bool:
+			{
+				// 设置顶点属性指针(顶点属性 0（索引 0）)
+				glEnableVertexAttribArray(m_VertexBufferIndex);
+
+				/**
+				* VBO 里的数据格式：
+				* 1：属性索引，代表这个是“位置”属性。
+				* 2：表示每个顶点由 3 个 float 组成（x, y, z）。
+				* 3：数据类型。
+				* 4：不进行归一化。
+				* 5：步长（每个顶点占 3 个 float）。
+				* 6：偏移量（数据从 0 开始）。
+				*/
+				glVertexAttribPointer(m_VertexBufferIndex,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					element.Normalized ? GL_TRUE : GL_FALSE,
+					layout.GetStride(),
+					(const void*)element.Offset);
+				m_VertexBufferIndex++;
+				break;
+			}
+			case ShaderDataType::Mat3:
+			case ShaderDataType::Mat4:
+			{
+				uint8_t count = element.GetComponentCount();
+				for (uint8_t i = 0; i < count; i++)
+				{
+					glEnableVertexAttribArray(m_VertexBufferIndex);
+					glVertexAttribPointer(m_VertexBufferIndex,
+						count,
+						ShaderDataTypeToOpenGLBaseType(element.Type),
+						element.Normalized ? GL_TRUE : GL_FALSE,
+						layout.GetStride(),
+						(const void*)(sizeof(float) * count * i));
+					glVertexAttribDivisor(m_VertexBufferIndex, 1);
+					m_VertexBufferIndex++;
+				}
+				break;
+			}
+			default:
+				HZ_CORE_ASSERT(false, "Unknown ShaderDataType!");
+			}
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);
