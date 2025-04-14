@@ -1,7 +1,7 @@
 #include "hzpch.h"
-#include <glad/glad.h>
-
 #include "Platform/OpenGL/OpenGLRendererAPI.h"
+
+#include <glad/glad.h>
 
 namespace Hazel {
 
