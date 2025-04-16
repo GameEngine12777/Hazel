@@ -31,6 +31,7 @@ IncludeDir["ImGui"] = "%{wks.location}/Hazel/vendor/imgui"
 IncludeDir["glm"] = "%{wks.location}/Hazel/vendor/glm"
 IncludeDir["stb_image"] = "%{wks.location}/Hazel/vendor/stb_image"
 IncludeDir["entt"] = "%{wks.location}/Hazel/vendor/entt/include"
+IncludeDir["yaml_cpp"] = "%{wks.location}/Hazel/vendor/yaml-cpp/include"
 
 -- 引用其他 premake5 生成得文件
 group "Dependencies"
@@ -38,6 +39,7 @@ group "Dependencies"
 	include "Hazel/vendor/GLFW"
 	include "Hazel/vendor/Glad"
 	include "Hazel/vendor/imgui"
+	include "Hazel/vendor/yaml-cpp"
 group ""
 
 include "Hazel"
