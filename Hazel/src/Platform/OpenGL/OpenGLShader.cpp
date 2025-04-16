@@ -174,6 +174,12 @@ namespace Hazel {
 		HZ_PROFILE_FUNCTION();
 
 		std::string result;
+
+		/**
+		* https://chatgpt.com/c/67ff0f50-bb80-8007-88bd-26409541bb4b
+		* C++ 中的 std::ifstream 是一个 RAII（Resource Acquisition Is Initialization）类型，
+		* 这意味着它在离开作用域（例如函数结束）时，会自动调用析构函数，自动关闭文件。所以手动调用 in.close() 是冗余的。
+		*/
 		std::ifstream in(filepath, std::ios::in | std::ios::binary);
 		if (in)
 		{
@@ -184,7 +190,8 @@ namespace Hazel {
 				result.resize(size);
 				in.seekg(0, std::ios::beg);
 				in.read(&result[0], size);
-				in.close();
+				// 使用 RAII 自动关闭文件, 不需要手动 colse
+				// in.close();
 			}
 			else
 			{

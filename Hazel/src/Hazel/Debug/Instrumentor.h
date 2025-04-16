@@ -6,6 +6,10 @@
 #include <iomanip>
 #include <string>
 #include <thread>
+#include <mutex>
+#include <sstream>
+
+#include "Hazel/Core/Log.h"
 
 // https://chatgpt.com/c/67f90896-e288-8007-bee5-a01e65b60562
 namespace Hazel {

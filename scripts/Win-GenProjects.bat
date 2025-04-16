@@ -10,7 +10,7 @@ REM 切换到当前批处理文件所在目录的上一级目录，并把原始�
 pushd %~dp0\..\
 
 REM 运行 Premake，生成 Visual Studio 2022 的项目文件
-call Extras\premake\premake5.exe vs2022
+call vendor\premake\bin\premake5.exe vs2022
 
 IF %ERRORLEVEL% NEQ 0 (
   REM 回到原来的目录
