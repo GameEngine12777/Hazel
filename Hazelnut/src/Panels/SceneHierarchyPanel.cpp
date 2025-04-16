@@ -20,9 +20,12 @@ namespace Hazel {
 	{
 		ImGui::Begin("Scene Hierarchy");
 
+		// 获取当前场景中所有注册过的 Entity
 		m_Context->m_Registry.each([&](auto entityID)
 		{
 			Entity entity{ entityID , m_Context.get() };
+
+			// 将 Entity 信息绘制在 Scene Hierarchy 面板上
 			DrawEntityNode(entity);
 		});
 
