@@ -114,15 +114,13 @@ namespace Hazel
 		*/
 		for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); it++)
 		{
-			(*it)->OnEvent(e);
-
 			/**
 			* 如果当前图层消耗掉了事件，将不再向下传递
 			*/
 			if (e.Handled)
-			{
 				break;
-			}
+
+			(*it)->OnEvent(e);
 		}
 	}
 

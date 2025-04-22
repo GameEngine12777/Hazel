@@ -13,7 +13,9 @@
 namespace Hazel {
 
 	EditorLayer::EditorLayer()
-		: Layer("EditorLayer"), m_CameraController(1280.0f / 720.0f), m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
+		: Layer("EditorLayer")
+		, m_CameraController(1280.0f / 720.0f)
+		, m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
 	}
 
@@ -122,7 +124,7 @@ namespace Hazel {
 		static float rotation = 0.0f;
 		rotation += ts * 50.0f;
 
-		// Renderer2D::BeginScene(m_CameraController.GetCamera());
+		//Renderer2D::BeginScene(m_CameraController.GetCamera());
 		//Renderer2D::DrawRotatedQuad({ 1.0f, 0.0f }, { 0.8f, 0.8f }, -45.0f, { 0.8f, 0.2f, 0.3f, 1.0f });
 		//Renderer2D::DrawQuad({ -1.0f, 0.0f }, { 0.8f, 0.8f }, { 0.8f, 0.2f, 0.3f, 1.0f });
 		//Renderer2D::DrawQuad({ 0.5f, -0.5f }, { 0.5f, 0.75f }, m_SquareColor);
@@ -138,10 +140,10 @@ namespace Hazel {
 		//	}
 		//}
 		// 
+		//Renderer2D::EndScene();
+
 		// Update scene
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
-
-		// Renderer2D::EndScene();
 
 		m_Framebuffer->Unbind();
 	}
