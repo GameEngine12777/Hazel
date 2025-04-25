@@ -83,7 +83,7 @@ namespace Hazel {
 		}
 
 		bool entityDeleted = false;
-		// 右键点击面板中的实体条目
+		// 右键点击面板中的实体条目（触发区域为该窗口下的某一个 item 上 ）
 		if (ImGui::BeginPopupContextItem())
 		{
 			if (ImGui::MenuItem("Delete Entity"))
