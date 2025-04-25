@@ -44,11 +44,14 @@ namespace Hazel {
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 			m_SelectionContext = {};
 
-		// Right-click on blank space
+		// 右键点击场景面板（触发区域为整个 Scene Hierarchy 窗口）
 		if (ImGui::BeginPopupContextWindow(0, 1, false))
 		{
 			if (ImGui::MenuItem("Create Empty Entity"))
 				m_Context->CreateEntity("Empty Entity");
+
+			if (ImGui::MenuItem("Create Empty Entity1"))
+				m_Context->CreateEntity("Empty Entity1");
 
 			ImGui::EndPopup();
 		}
@@ -80,6 +83,7 @@ namespace Hazel {
 		}
 
 		bool entityDeleted = false;
+		// 右键点击面板中的实体条目
 		if (ImGui::BeginPopupContextItem())
 		{
 			if (ImGui::MenuItem("Delete Entity"))

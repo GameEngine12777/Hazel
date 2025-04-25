@@ -117,6 +117,7 @@ namespace Hazel {
 
 		// Render
 		Renderer2D::ResetStats();
+		// 绑定片段缓存区，后期操作将在这个片段下进行
 		m_Framebuffer->Bind();
 		RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 		RenderCommand::Clear();
@@ -144,7 +145,8 @@ namespace Hazel {
 
 		// Update scene
 		m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
-
+		
+		// 解绑片段缓存
 		m_Framebuffer->Unbind();
 	}
 
@@ -248,8 +250,10 @@ namespace Hazel {
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
+		// 获取片段缓存区的 TextureID
 		uint64_t textureID = m_Framebuffer->GetColorAttachmentRendererID();
 		// reinterpret_cast https://zhuanlan.zhihu.com/p/679500619 减少类型检查，避免编译 warning
+		// 将该片段绘制在我们指定的视口下
 		ImGui::Image(reinterpret_cast<void*>(textureID), ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 		// Gizmos

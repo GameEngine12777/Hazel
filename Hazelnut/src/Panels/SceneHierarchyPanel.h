@@ -26,7 +26,9 @@ namespace Hazel {
 		void DrawComponents(Entity entity);
 
 	private:
+		/** 场景上下文 */
 		Ref<Scene> m_Context;
+		/** 当前选中的实体 */
 		Entity m_SelectionContext;
 	};
 
