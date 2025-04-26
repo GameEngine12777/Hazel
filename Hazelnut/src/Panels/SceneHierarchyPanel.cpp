@@ -50,9 +50,6 @@ namespace Hazel {
 			if (ImGui::MenuItem("Create Empty Entity"))
 				m_Context->CreateEntity("Empty Entity");
 
-			if (ImGui::MenuItem("Create Empty Entity1"))
-				m_Context->CreateEntity("Empty Entity1");
-
 			ImGui::EndPopup();
 		}
 
