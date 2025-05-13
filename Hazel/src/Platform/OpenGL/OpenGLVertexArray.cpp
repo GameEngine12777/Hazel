@@ -73,13 +73,7 @@ namespace Hazel {
 			case ShaderDataType::Float2:
 			case ShaderDataType::Float3:
 			case ShaderDataType::Float4:
-			case ShaderDataType::Int:
-			case ShaderDataType::Int2:
-			case ShaderDataType::Int3:
-			case ShaderDataType::Int4:
-			case ShaderDataType::Bool:
 			{
-				// 设置顶点属性指针(顶点属性 0（索引 0）)
 				glEnableVertexAttribArray(m_VertexBufferIndex);
 
 				/**
@@ -95,6 +89,22 @@ namespace Hazel {
 					element.GetComponentCount(),
 					ShaderDataTypeToOpenGLBaseType(element.Type),
 					element.Normalized ? GL_TRUE : GL_FALSE,
+					layout.GetStride(),
+					(const void*)element.Offset);
+				m_VertexBufferIndex++;
+				break;
+			}
+			case ShaderDataType::Int:
+			case ShaderDataType::Int2:
+			case ShaderDataType::Int3:
+			case ShaderDataType::Int4:
+			case ShaderDataType::Bool:
+			{
+				// 设置顶点属性指针(顶点属性 0（索引 0）)
+				glEnableVertexAttribArray(m_VertexBufferIndex);
+				glVertexAttribIPointer(m_VertexBufferIndex,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
 					layout.GetStride(),
 					(const void*)element.Offset);
 				m_VertexBufferIndex++;
