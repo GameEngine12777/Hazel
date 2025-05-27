@@ -56,12 +56,12 @@ namespace Hazel {
 
 		s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(QuadVertex));
 		s_Data.QuadVertexBuffer->SetLayout({
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float4, "a_Color" },
-			{ ShaderDataType::Float2, "a_TexCoord" },
-			{ ShaderDataType::Float, "a_TexIndex" },
-			{ ShaderDataType::Float, "a_TilingFactor" },
-			{ ShaderDataType::Int,   "a_EntityID" }
+			{ ShaderDataType::Float3,	"a_Position" },
+			{ ShaderDataType::Float4,	"a_Color" },
+			{ ShaderDataType::Float2,	"a_TexCoord" },
+			{ ShaderDataType::Float,	"a_TexIndex" },
+			{ ShaderDataType::Float,	"a_TilingFactor" },
+			{ ShaderDataType::Int,		"a_EntityID" }
 		});
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -155,9 +155,6 @@ namespace Hazel {
 	void Renderer2D::EndScene()
 	{
 		HZ_PROFILE_FUNCTION();
-
-		uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
-		s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
 		Flush();
 	}

@@ -41,6 +41,7 @@ namespace Hazel {
 		shader->SetMat4("u_ViewProjection", s_SceneData->ViewProjectionMatrix);
 		shader->SetMat4("u_Transform", transform);
 
+		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}
 

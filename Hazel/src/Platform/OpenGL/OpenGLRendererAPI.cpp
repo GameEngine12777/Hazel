@@ -63,7 +63,7 @@ namespace Hazel {
 		HZ_PROFILE_FUNCTION();
 
 		// @TODO 当下这步由外部调用，后期看情况是否需要移入
-		vertexArray->Bind();
+		// vertexArray->Bind();
 
 		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 
