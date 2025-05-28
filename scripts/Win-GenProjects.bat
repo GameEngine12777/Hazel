@@ -12,6 +12,9 @@ pushd %~dp0\..\
 REM 运行 Premake，生成 Visual Studio 2022 的项目文件
 call vendor\premake\bin\premake5.exe vs2022
 
+popd
+PAUSE
+
 IF %ERRORLEVEL% NEQ 0 (
   REM 回到原来的目录
   popd

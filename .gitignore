@@ -11,3 +11,6 @@ bin-int/
 *.vcxproj
 *.filters
 *.log
+Hazel/vendor/VulkanSDK/
+scripts/__pycache__/
+Hazelnut/assets/cache/
