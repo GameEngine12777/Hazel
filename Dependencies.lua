@@ -3,7 +3,7 @@
 
 VULKAN_SDK = os.getenv("VULKAN_SDK")
 
-print(VULKAN_SDK)
+print("VulkanSDK dir:: " .. VULKAN_SDK)
 
 IncludeDir = {}
 IncludeDir["stb_image"] = "%{wks.location}/Hazel/vendor/stb_image"
