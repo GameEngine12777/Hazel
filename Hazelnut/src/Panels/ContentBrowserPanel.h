@@ -6,6 +6,9 @@
 
 namespace Hazel {
 
+	/**
+	* 内容浏览器
+	*/
 	class ContentBrowserPanel
 	{
 	public:
