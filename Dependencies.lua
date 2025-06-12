@@ -14,6 +14,7 @@ IncludeDir["ImGui"] = "%{wks.location}/Hazel/vendor/ImGui"
 IncludeDir["ImGuizmo"] = "%{wks.location}/Hazel/vendor/ImGuizmo"
 IncludeDir["glm"] = "%{wks.location}/Hazel/vendor/glm"
 IncludeDir["entt"] = "%{wks.location}/Hazel/vendor/entt/include"
+IncludeDir["Box2D"] = "%{wks.location}/Hazel/vendor/Box2D/include"
 IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
 
 LibraryDir = {}

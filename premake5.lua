@@ -33,6 +33,7 @@ group "Dependencies"
 	include "Hazel/vendor/Glad"
 	include "Hazel/vendor/imgui"
 	include "Hazel/vendor/yaml-cpp"
+	include "Hazel/vendor/Box2D"
 group ""
 
 include "Hazel"
