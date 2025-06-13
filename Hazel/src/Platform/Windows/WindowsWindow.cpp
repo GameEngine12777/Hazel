@@ -121,7 +121,7 @@ namespace Hazel {
 			// 按键长按事件
 			case GLFW_REPEAT:
 				{
-					KeyPressedEvent event(key, 1);
+					KeyPressedEvent event(key, true);
 					data.EventCallback(event);
 					break;
 				}
