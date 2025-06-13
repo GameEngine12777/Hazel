@@ -58,4 +58,8 @@ namespace Hazel {
 		return std::string();
 	}
 
+	float Time::GetTime()
+	{
+		return glfwGetTime();
+	}
 }
