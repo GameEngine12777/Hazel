@@ -35,7 +35,7 @@ project "Hazelnut"
 		-- 构建成功后自动拷贝 VulkanSDK 相关的 dll 文件到当前项目的构建目标路径
 		postbuildcommands
         {
-            "{COPYDIR} \"%{LibraryDir.VulkanSDK_DebugDLL}\" \"%{cfg.targetdir}\""
+            "{COPYDIR} \"%{LibraryDir.VulkanSDK_DLL}\" \"%{cfg.targetdir}\""
         }
 
 	filter "configurations:Debug"
