@@ -63,7 +63,7 @@ namespace Hazel {
 		HZ_PROFILE_FUNCTION();
 
 		// @TODO 当下这步由外部调用，后期看情况是否需要移入
-		// vertexArray->Bind();
+		vertexArray->Bind();
 
 		uint32_t count = indexCount ? indexCount : vertexArray->GetIndexBuffer()->GetCount();
 
@@ -75,7 +75,6 @@ namespace Hazel {
 		* 4.索引数组的起始位置（如果已绑定 EBO，传 0 即可）
 		*/
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
-		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }
