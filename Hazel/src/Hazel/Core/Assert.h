@@ -2,6 +2,7 @@
 
 #include "Hazel/Core/Base.h"
 #include "Hazel/Core/Log.h"
+#include <filesystem>
 
 #ifdef HZ_ENABLE_ASSERTS
 

@@ -139,7 +139,7 @@ namespace Hazel {
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity)
 	{
-		HZ_CORE_ASSERT(entity.HasComponent<IDComponent>(), "");
+		HZ_CORE_ASSERT(entity.HasComponent<IDComponent>());
 
 		out << YAML::BeginMap; // Entity
 		out << YAML::Key << "Entity" << YAML::Value << entity.GetUUID();
@@ -259,7 +259,7 @@ namespace Hazel {
 	void SceneSerializer::SerializeRuntime(const std::string& filepath)
 	{
 		// Not implemented
-		HZ_CORE_ASSERT(false, "");
+		HZ_CORE_ASSERT(false);
 	}
 
 	bool SceneSerializer::Deserialize(const std::string& filepath)
@@ -361,7 +361,7 @@ namespace Hazel {
 	bool SceneSerializer::DeserializeRuntime(const std::string& filepath)
 	{
 		// Not implemented
-		HZ_CORE_ASSERT(false, "");
+		HZ_CORE_ASSERT(false);
 		return false;
 	}
 
