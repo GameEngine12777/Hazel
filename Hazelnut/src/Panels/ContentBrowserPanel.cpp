@@ -42,8 +42,7 @@ namespace Hazel {
 		for (auto& directoryEntry : std::filesystem::directory_iterator(m_CurrentDirectory))
 		{
 			const auto& path = directoryEntry.path();
-			auto relativePath = std::filesystem::relative(path, g_AssetPath);
-			std::string filenameString = relativePath.filename().string();
+			std::string filenameString = path.filename().string();
 
 			ImGui::PushID(filenameString.c_str());
 			Ref<Texture2D> icon = directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon;
@@ -53,6 +52,7 @@ namespace Hazel {
 			// 开始资产拖拽
 			if (ImGui::BeginDragDropSource())
 			{
+				auto relativePath = std::filesystem::relative(path, g_AssetPath);
 				const wchar_t* itemPath = relativePath.c_str();
 				// 消费拖拽资产(消费类型: CONTENT_BROWSER_ITEM)
 				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
