@@ -36,27 +36,29 @@ namespace Hazel {
 		// 绘制场景大纲
 		ImGui::Begin("Scene Hierarchy");
 
-		// 获取当前场景中所有注册过的 Entity
-		m_Context->m_Registry.each([&](auto entityID)
+		if (m_Context)
 		{
-			Entity entity{ entityID , m_Context.get() };
+			// 获取当前场景中所有注册过的 Entity
+			m_Context->m_Registry.each([&](auto entityID)
+				{
+					Entity entity{ entityID , m_Context.get() };
 
-			// 将 Entity 信息绘制在 Scene Hierarchy 面板上
-			DrawEntityNode(entity);
-		});
+					// 将 Entity 信息绘制在 Scene Hierarchy 面板上
+					DrawEntityNode(entity);
+				});
 
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext = {};
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				m_SelectionContext = {};
 
-		// 右键点击场景面板（触发区域为整个 Scene Hierarchy 窗口）
-		if (ImGui::BeginPopupContextWindow(0, 1, false))
-		{
-			if (ImGui::MenuItem("Create Empty Entity"))
-				m_Context->CreateEntity("Empty Entity");
+			// 右键点击场景面板（触发区域为整个 Scene Hierarchy 窗口）
+			if (ImGui::BeginPopupContextWindow(0, 1, false))
+			{
+				if (ImGui::MenuItem("Create Empty Entity"))
+					m_Context->CreateEntity("Empty Entity");
 
-			ImGui::EndPopup();
+				ImGui::EndPopup();
+			}
 		}
-
 		ImGui::End();
 
 		// 绘制属性面板
@@ -406,7 +408,7 @@ namespace Hazel {
 		DrawComponent<BoxCollider2DComponent>("Box Collider 2D", entity, [](auto& component)
 		{
 			ImGui::DragFloat2("Offset", glm::value_ptr(component.Offset));
-			ImGui::DragFloat2("Size", glm::value_ptr(component.Offset));
+			ImGui::DragFloat2("Size", glm::value_ptr(component.Size));
 			ImGui::DragFloat("Density", &component.Density, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Friction", &component.Friction, 0.01f, 0.0f, 1.0f);
 			ImGui::DragFloat("Restitution", &component.Restitution, 0.01f, 0.0f, 1.0f);
