@@ -96,6 +96,7 @@ void main()
 		case 31: texColor *= texture(u_Textures[31], Input.TexCoord * Input.TilingFactor); break;
 	}
 
+	// 如果最终的纹理颜色的 alpha 值为 0，则丢弃该片元（fragment），也就是说，它不会被写入颜色缓冲或深度缓冲。
 	if (texColor.a == 0.0)
 		discard;
 
