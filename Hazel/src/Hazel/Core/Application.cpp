@@ -14,16 +14,20 @@ namespace Hazel
 {
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const std::string& name, ApplicationCommandLineArgs args)
-		: m_CommandLineArgs(args)
+	Application::Application(const ApplicationSpecification& specification)
+		: m_Specification(specification)
 	{
 		HZ_PROFILE_FUNCTION();
 
 		HZ_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
+		// 在此设置工作目录
+		if (!m_Specification.WorkingDirectory.empty())
+			std::filesystem::current_path(m_Specification.WorkingDirectory);
+
 		// 创建 窗口（不同得平台实例化得对象将不同，具体看平台 Create 实现）
-		m_Window = Window::Create(WindowProps(name));
+		m_Window = Window::Create(WindowProps(m_Specification.Name));
 
 		// 绑定执行事件
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(&Application::OnEvent));
