@@ -23,7 +23,7 @@ Entities:
     TagComponent:
       Tag: Camera
     TransformComponent:
-      Translation: [0, 0, 4.99711323]
+      Translation: [0.771430969, 0, 11.0479717]
       Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
     CameraComponent:
@@ -41,7 +41,7 @@ Entities:
     TagComponent:
       Tag: Sprite
     TransformComponent:
-      Translation: [0.425109863, 3.33982968, 0.0225147605]
+      Translation: [0.300598502, 4.80069637, 0.0225147568]
       Rotation: [0, 0, -0.235084534]
       Scale: [0.361159712, 0.375572056, 0.848135769]
     SpriteRendererComponent:
@@ -54,13 +54,13 @@ Entities:
       Size: [0.5, 0.5]
       Density: 1
       Friction: 0.5
-      Restitution: 0.300000012
+      Restitution: 0.680000007
       RestitutionThreshold: 0.5
   - Entity: 4350359415190072503
     TagComponent:
       Tag: Empty Entity
     TransformComponent:
-      Translation: [-0.384577751, -0.603643894, 7.4505806e-09]
+      Translation: [-0.367183208, -0.550692797, 7.44809636e-09]
       Rotation: [0, 0, -0.294300318]
       Scale: [1.99999976, 1.50000012, 1]
     SpriteRendererComponent:
@@ -79,7 +79,7 @@ Entities:
     TagComponent:
       Tag: Circle
     TransformComponent:
-      Translation: [0.974062681, 1.36130035, -0.0517129898]
+      Translation: [0.990380287, 1.50195408, -0.0517129898]
       Rotation: [0, 0, 0]
       Scale: [2.15999985, 2.15999985, 2.15999985]
     CircleRendererComponent:
@@ -92,7 +92,7 @@ Entities:
     CircleCollider2DComponent:
       Offset: [0, 0]
       Radius: 0.5
-      Density: 1
+      Density: 0.819999993
       Friction: 0.00999999978
-      Restitution: 0.5
+      Restitution: 0.230000004
       RestitutionThreshold: 0.119999997

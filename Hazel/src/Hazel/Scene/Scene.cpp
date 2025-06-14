@@ -163,7 +163,7 @@ namespace Hazel {
 			});
 		}
 
-		// Physics
+		// Physics 物理更新
 		{
 			const int32_t velocityIterations = 6;
 			const int32_t positionIterations = 2;
@@ -177,8 +177,11 @@ namespace Hazel {
 				auto& transform = entity.GetComponent<TransformComponent>();
 				auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
+				// 获取刚体及其物理模拟得数据
 				b2Body* body = (b2Body*)rb2d.RuntimeBody;
 				const auto& position = body->GetPosition();
+
+				// 将物理模拟位置旋转信息设置回模型上
 				transform.Translation.x = position.x;
 				transform.Translation.y = position.y;
 				transform.Rotation.z = body->GetAngle();
@@ -188,7 +191,9 @@ namespace Hazel {
 		// Render 2D
 		Camera* mainCamera = nullptr;
 		glm::mat4 cameraTransform;
+
 		{
+			// 获取场景中的相机，启动后得视角将以这个相机为主
 			auto view = m_Registry.view<TransformComponent, CameraComponent>();
 			for (auto entity : view)
 			{
@@ -203,6 +208,7 @@ namespace Hazel {
 			}
 		}
 
+		// 场景中存在主相机时
 		if (mainCamera)
 		{
 			Renderer2D::BeginScene(*mainCamera, cameraTransform);
@@ -303,6 +309,8 @@ namespace Hazel {
 
 	void Scene::OnPhysics2DStart()
 	{
+		// 构造物理世界上下文
+		// -9.8f 表示重力加速度的 Y 方向分量，其来源是地球表面的标准重力加速度。
 		m_PhysicsWorld = new b2World({ 0.0f, -9.8f });
 
 		auto view = m_Registry.view<Rigidbody2DComponent>();
@@ -312,11 +320,13 @@ namespace Hazel {
 			auto& transform = entity.GetComponent<TransformComponent>();
 			auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
 
+			// 刚体初始参数定义
 			b2BodyDef bodyDef;
-			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type);
-			bodyDef.position.Set(transform.Translation.x, transform.Translation.y);
-			bodyDef.angle = transform.Rotation.z;
+			bodyDef.type = Rigidbody2DTypeToBox2DBody(rb2d.Type); // 刚体类型 静态/动态
+			bodyDef.position.Set(transform.Translation.x, transform.Translation.y); // 刚体位置信息
+			bodyDef.angle = transform.Rotation.z; // 刚体旋转信息
 
+			// 构建刚体
 			b2Body* body = m_PhysicsWorld->CreateBody(&bodyDef);
 			body->SetFixedRotation(rb2d.FixedRotation);
 			rb2d.RuntimeBody = body;
@@ -325,9 +335,11 @@ namespace Hazel {
 			{
 				auto& bc2d = entity.GetComponent<BoxCollider2DComponent>();
 
+				// 刚体得大小
 				b2PolygonShape boxShape;
 				boxShape.SetAsBox(bc2d.Size.x * transform.Scale.x, bc2d.Size.y * transform.Scale.y);
 
+				// 刚体样式
 				b2FixtureDef fixtureDef;
 				fixtureDef.shape = &boxShape;
 				fixtureDef.density = bc2d.Density;

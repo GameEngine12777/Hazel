@@ -24,14 +24,19 @@ namespace Hazel {
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
 		void DestroyEntity(Entity entity);
 
+		/** 运行时启动 */
 		void OnRuntimeStart();
+		/** 运行时结束 */
 		void OnRuntimeStop();
 
 		void OnSimulationStart();
 		void OnSimulationStop();
 
+		/** 运行时更新 */
 		void OnUpdateRuntime(Timestep ts);
+		/** 模拟更新 */
 		void OnUpdateSimulation(Timestep ts, EditorCamera& camera);
+		/** 编辑器下更新 */
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
 		void OnViewportResize(uint32_t width, uint32_t height);
 
