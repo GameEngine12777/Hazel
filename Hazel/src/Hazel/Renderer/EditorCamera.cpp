@@ -10,6 +10,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+
 namespace Hazel {
 
 	EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip, float farClip)
@@ -31,6 +32,8 @@ namespace Hazel {
 
 		glm::quat orientation = GetOrientation();
 		m_ViewMatrix = glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
+
+		// 通过取逆相机在空间中得位置，进而获取视图矩阵
 		m_ViewMatrix = glm::inverse(m_ViewMatrix);
 	}
 
@@ -81,7 +84,19 @@ namespace Hazel {
 	void EditorCamera::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<KeyPressedEvent>(HZ_BIND_EVENT_FN(&EditorCamera::OnKeyPressed));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(HZ_BIND_EVENT_FN(&EditorCamera::OnMouseButtonPressed));
 		dispatcher.Dispatch<MouseScrolledEvent>(HZ_BIND_EVENT_FN(&EditorCamera::OnMouseScroll));
+	}
+
+	bool EditorCamera::OnKeyPressed(KeyPressedEvent& e)
+	{
+		return false;
+	}
+
+	bool EditorCamera::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		return false;
 	}
 
 	bool EditorCamera::OnMouseScroll(MouseScrolledEvent& e)

@@ -17,7 +17,6 @@ namespace Hazel {
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer")
 		, m_CameraController(1280.0f / 720.0f)
-		, m_SquareColor({ 0.2f, 0.3f, 0.8f, 1.0f })
 	{
 	}
 
@@ -25,7 +24,6 @@ namespace Hazel {
 	{
 		HZ_PROFILE_FUNCTION();
 
-		m_CheckerboardTexture = Texture2D::Create("assets/textures/Checkerboard.png");
 		m_IconPlay = Texture2D::Create("Resources/Icons/PlayButton.png");
 		m_IconSimulate = Texture2D::Create("Resources/Icons/SimulateButton.png");
 		m_IconStop = Texture2D::Create("Resources/Icons/StopButton.png");
@@ -245,6 +243,7 @@ namespace Hazel {
 		m_ViewportHovered = ImGui::IsWindowHovered();
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportFocused && !m_ViewportHovered);
 
+		// 获取 Windows 窗口大小
 		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 		m_ViewportSize = { viewportPanelSize.x, viewportPanelSize.y };
 
@@ -269,9 +268,10 @@ namespace Hazel {
 		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
 		if (selectedEntity && m_GizmoType != -1)
 		{
-			ImGuizmo::SetOrthographic(false);
-			ImGuizmo::SetDrawlist();
+			ImGuizmo::SetOrthographic(false); // 设置 ImGuizmo 使用透视投影（而非正交）
+			ImGuizmo::SetDrawlist(); // 设置 ImGuizmo 的绘制列表为当前 ImGui 上下文的默认列表
 
+			// 设置 Gizmo 的绘制区域，对应到编辑器视口的像素区域
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
 			// Camera
@@ -298,16 +298,26 @@ namespace Hazel {
 
 			float snapValues[3] = { snapValue, snapValue, snapValue };
 
-			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
-				nullptr, snap ? snapValues : nullptr);
+			// 使用 ImGuizmo 进行实体变换操作
+			ImGuizmo::Manipulate(
+				glm::value_ptr(cameraView),          // 相机视图矩阵
+				glm::value_ptr(cameraProjection),    // 相机投影矩阵
+				(ImGuizmo::OPERATION)m_GizmoType,    // 当前操作类型（平移/旋转/缩放）
+				ImGuizmo::LOCAL,                     // 使用局部坐标系
+				glm::value_ptr(transform),           // 传入并修改变换矩阵
+				nullptr,                             // 不使用增量矩阵
+				snap ? snapValues : nullptr          // 如果启用吸附，则传入吸附值
+			);
 
+			// 如果用户正在拖动 Gizmo
 			if (ImGuizmo::IsUsing())
 			{
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);
 
+				// 计算相对旋转变化（避免旋转跳变问题）
 				glm::vec3 deltaRotation = rotation - tc.Rotation;
+
 				tc.Translation = translation;
 				tc.Rotation += deltaRotation;
 				tc.Scale = scale;

@@ -58,7 +58,6 @@ namespace Hazel
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			
 			if (!m_Minimized)
 			{
 				{
@@ -72,6 +71,7 @@ namespace Hazel
 						layer->OnUpdate(timestep);
 				}
 
+				// 开始 ImGui 得渲染
 				m_ImGuiLayer->Begin();
 				{
 					HZ_PROFILE_SCOPE("LayerStack OnImGuiRender");
@@ -101,16 +101,6 @@ namespace Hazel
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(HZ_BIND_EVENT_FN(&Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(HZ_BIND_EVENT_FN(&Application::OnWindowResize));
-
-		//if (e.GetEventType() == Hazel::EventType::KeyPressed)
-		//{
-		//	Hazel::KeyPressedEvent& Te = (Hazel::KeyPressedEvent&)e;
-		//	if (Te.GetKeyCode() == HZ_KEY_A)
-		//	{
-		//		m_Camera.SetPosition({ -0.9f, 0.f, .0f });
-		//		m_Camera.SetRotation(135.0f);
-		//	}
-		//}
 
 		/**
 		* 事件传递

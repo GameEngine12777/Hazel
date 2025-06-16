@@ -10,6 +10,8 @@
 
 namespace Hazel {
 
+#ifdef HZ_PLATFORM_WINDOWS
+
 	std::string FileDialogs::OpenFile(const char* filter)
 	{
 		OPENFILENAMEA ofn;
@@ -30,7 +32,6 @@ namespace Hazel {
 			return ofn.lpstrFile;
 
 		return std::string();
-
 	}
 
 	std::string FileDialogs::SaveFile(const char* filter)
@@ -62,4 +63,7 @@ namespace Hazel {
 	{
 		return glfwGetTime();
 	}
+
+#endif // HZ_PLATFORM_WINDOWS
+
 }

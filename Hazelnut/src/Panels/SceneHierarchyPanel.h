@@ -26,7 +26,9 @@ namespace Hazel {
 		template<typename T>
 		void DisplayAddComponentEntry(const std::string& entryName);
 
+		/** 在“Scene Hierarchy”中绘制单个实体的节点 */
 		void DrawEntityNode(Entity entity);
+		/** 为选中的实体绘制其所有组件的属性 UI */
 		void DrawComponents(Entity entity);
 
 	private:

@@ -6,6 +6,8 @@
 
 namespace Hazel {
 
+#ifdef HZ_PLATFORM_WINDOWS
+
 	bool Input::IsKeyPressed(const KeyCode key)
 	{
 		auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
@@ -38,5 +40,7 @@ namespace Hazel {
 	{
 		return GetMousePosition().y;
 	}
+
+#endif // HZ_PLATFORM_WINDOWS
 
 }

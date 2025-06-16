@@ -18,6 +18,7 @@
 
 namespace Hazel {
 
+	// 声明一个全局的资源路径，用于加载外部资源（例如纹理）
 	extern const std::filesystem::path g_AssetPath;
 
 	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& context)
@@ -31,6 +32,7 @@ namespace Hazel {
 		m_SelectionContext = {};
 	}
 
+	// 渲染主面板：包含 “Scene Hierarchy” 和 “Properties” 两个窗口
 	void SceneHierarchyPanel::OnImGuiRender()
 	{
 		// 绘制场景大纲
@@ -38,7 +40,7 @@ namespace Hazel {
 
 		if (m_Context)
 		{
-			// 获取当前场景中所有注册过的 Entity
+			// 遍历场景中所有的 Entity
 			m_Context->m_Registry.each([&](auto entityID)
 				{
 					Entity entity{ entityID , m_Context.get() };
@@ -47,10 +49,11 @@ namespace Hazel {
 					DrawEntityNode(entity);
 				});
 
+			// 点击空白区域会取消当前选中的 Entity
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 				m_SelectionContext = {};
 
-			// 右键点击场景面板（触发区域为整个 Scene Hierarchy 窗口）
+			// 鼠标右键点击窗口空白区域，弹出右键菜单（触发区域为整个 Scene Hierarchy 窗口）
 			if (ImGui::BeginPopupContextWindow(0, 1, false))
 			{
 				if (ImGui::MenuItem("Create Empty Entity"))
@@ -79,19 +82,21 @@ namespace Hazel {
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
 	{
 		auto& tag = entity.GetComponent<TagComponent>().Tag;
-		
+
+		// 设置节点的显示样式
 		ImGuiTreeNodeFlags flags = ((m_SelectionContext == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
-		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+			flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+
+		// 使用 Entity ID 作为唯一标识
 		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tag.c_str());
-		
-		// 选中某个 Entity
+
+		// 鼠标点击时，设置该实体为选中
 		if (ImGui::IsItemClicked())
-		{
 			m_SelectionContext = entity;
-		}
 
 		bool entityDeleted = false;
-		// 右键点击面板中的实体条目（触发区域为该窗口下的某一个 item 上 ）
+
+		// 右键点击该实体节点，弹出上下文菜单
 		if (ImGui::BeginPopupContextItem())
 		{
 			if (ImGui::MenuItem("Delete Entity"))
@@ -100,14 +105,17 @@ namespace Hazel {
 			ImGui::EndPopup();
 		}
 
+		// 子节点逻辑（暂无实际子内容，但保留结构）
 		if (opened)
 		{
+			ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 			bool opened = ImGui::TreeNodeEx((void*)9817239, flags, tag.c_str());
 			if (opened)
 				ImGui::TreePop();
 			ImGui::TreePop();
 		}
 
+		// 删除实体
 		if (entityDeleted)
 		{
 			m_Context->DestroyEntity(entity);
@@ -116,24 +124,29 @@ namespace Hazel {
 		}
 	}
 
+	/** 绘制用于编辑 glm::vec3 的通用控件（用于位移、旋转、缩放） */
 	static void DrawVec3Control(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f)
 	{
+		// 设置字体和 UI 样式
 		ImGuiIO& io = ImGui::GetIO();
 		auto boldFont = io.Fonts->Fonts[0];
 
-		ImGui::PushID(label.c_str());
+		ImGui::PushID(label.c_str()); // 唯一 ID，避免冲突
 
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, columnWidth);
-		ImGui::Text(label.c_str());
+		ImGui::Text(label.c_str()); // 标签文字
 		ImGui::NextColumn();
 
+		// 设置 X/Y/Z 分量的拖拽和按钮控件
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
+		// 按钮大小根据字体高度设置
 		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
 
+		// X 分量按钮（红色）
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.2f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
@@ -144,10 +157,11 @@ namespace Hazel {
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##X", &values.x, 0.01f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
+		// Y 分量按钮（绿色）
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
@@ -156,12 +170,12 @@ namespace Hazel {
 			values.y = resetValue;
 		ImGui::PopFont();
 		ImGui::PopStyleColor(3);
-
 		ImGui::SameLine();
-		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Y", &values.y, 0.01f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
+		// Z 分量按钮（蓝色）
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
@@ -170,18 +184,16 @@ namespace Hazel {
 			values.z = resetValue;
 		ImGui::PopFont();
 		ImGui::PopStyleColor(3);
-
 		ImGui::SameLine();
-		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::DragFloat("##Z", &values.z, 0.01f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopItemWidth();
 
 		ImGui::PopStyleVar();
-
 		ImGui::Columns(1);
-
 		ImGui::PopID();
 	}
 
+	// 通用组件绘制逻辑，支持删除组件的 UI
 	template<typename T, typename UIFunction>
 	static void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction)
 	{
@@ -195,8 +207,9 @@ namespace Hazel {
 			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
 			ImGui::Separator();
 			bool open = ImGui::TreeNodeEx((void*)typeid(T).hash_code(), treeNodeFlags, name.c_str());
-			ImGui::PopStyleVar(
-			);
+			ImGui::PopStyleVar();
+
+			// 组件设置按钮 "+"
 			ImGui::SameLine(contentRegionAvailable.x - lineHeight * 0.5f);
 			if (ImGui::Button("+", ImVec2{ lineHeight, lineHeight }))
 			{
@@ -214,10 +227,12 @@ namespace Hazel {
 
 			if (open)
 			{
+				// 调用外部传入的绘制函数
 				uiFunction(component);
 				ImGui::TreePop();
 			}
 
+			// 移除组件
 			if (removeComponent)
 				entity.RemoveComponent<T>();
 		}
