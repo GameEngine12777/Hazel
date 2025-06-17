@@ -66,6 +66,7 @@ project "Hazel"
 		linkoptions 
 		{ 
 			"/ignore:4006",
+			"/ignore:4099",
 		}
 
 		defines

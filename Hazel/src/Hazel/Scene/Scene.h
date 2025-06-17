@@ -95,6 +95,8 @@ namespace Hazel {
 		 */
 		void DuplicateEntity(Entity entity);
 
+		Entity GetEntityByUUID(UUID uuid);
+
 		/**
 		 * @brief 获取当前场景中标记为“主相机”的实体
 		 * @return 若存在，返回主相机实体；否则返回无效实体
@@ -143,6 +145,8 @@ namespace Hazel {
 
 		/** Box2D 物理世界对象指针（仅在运行/模拟时存在） */
 		b2World* m_PhysicsWorld = nullptr;
+
+		std::unordered_map<UUID, entt::entity> m_EntityMap;
 
 		/** 声明友元类，允许直接访问私有成员 */
 		friend class Entity;

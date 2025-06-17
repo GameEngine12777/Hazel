@@ -111,6 +111,14 @@ namespace Hazel {
 		CameraComponent(const CameraComponent&) = default;
 	};
 
+	struct ScriptComponent
+	{
+		std::string ClassName;
+
+		ScriptComponent() = default;
+		ScriptComponent(const ScriptComponent&) = default;
+	};
+
 	/** 
 	 * 原生脚本绑定组件（运行时绑定C++类）
 	 */
@@ -206,6 +214,7 @@ namespace Hazel {
 		SpriteRendererComponent,
 		CircleRendererComponent,
 		CameraComponent,
+		ScriptComponent,
 		NativeScriptComponent,
 		Rigidbody2DComponent,
 		BoxCollider2DComponent,

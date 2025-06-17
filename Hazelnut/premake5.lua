@@ -32,6 +32,12 @@ project "Hazelnut"
 	filter "system:windows"
 		systemversion "latest"
 
+		linkoptions 
+		{ 
+			"/ignore:4006",
+			"/ignore:4099",
+		}
+
 		-- 构建成功后自动拷贝 VulkanSDK 相关的 dll 文件到当前项目的构建目标路径
 		postbuildcommands
         {
