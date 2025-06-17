@@ -39,6 +39,7 @@ project "Hazel"
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}",
 		"%{IncludeDir.entt}",
+		"%{IncludeDir.mono}",
 		"%{IncludeDir.yaml_cpp}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.VulkanSDK}",
@@ -53,6 +54,7 @@ project "Hazel"
 		"opengl32.lib",
 		"yaml-cpp",
 		"Box2D",
+		"%{Library.mono}",
 	}
 
 	filter "files:vendor/ImGuizmo/**.cpp"
@@ -60,9 +62,22 @@ project "Hazel"
 
 	filter "system:windows"
 		systemversion "latest"
+		
+		linkoptions 
+		{ 
+			"/ignore:4006",
+		}
 
 		defines
 		{
+		}
+
+		links
+		{
+			"%{Library.WinSock}",
+			"%{Library.WinMM}",
+			"%{Library.WinVersion}",
+			"%{Library.BCrypt}",
 		}
 
 	filter "configurations:Debug"

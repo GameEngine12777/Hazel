@@ -4,6 +4,10 @@
 bin/
 bin-int/
 !vendor/premake/bin
+Hazel/vendor/VulkanSDK/
+scripts/__pycache__/
+Hazelnut/assets/cache/
+Hazelnut/Resources/Scripts/Intermediates/
 
 #Files
 *.user
@@ -11,6 +15,4 @@ bin-int/
 *.vcxproj
 *.filters
 *.log
-Hazel/vendor/VulkanSDK/
-scripts/__pycache__/
-Hazelnut/assets/cache/
+*.csproj

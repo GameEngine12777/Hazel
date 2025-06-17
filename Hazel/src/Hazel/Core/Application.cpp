@@ -9,6 +9,7 @@
 #include "Hazel/Renderer/Buffer.h"
 #include "Hazel/Renderer/VertexArray.h"
 #include "Hazel/Utils/PlatformUtils.h"
+#include "Hazel/Scripting/ScriptEngine.h"
 
 namespace Hazel
 {
@@ -33,6 +34,7 @@ namespace Hazel
 		m_Window->SetEventCallback(HZ_BIND_EVENT_FN(&Application::OnEvent));
 
 		Renderer::Init();
+		ScriptEngine::Init();
 
 		// 创建 imgui 图层
 		m_ImGuiLayer = new ImGuiLayer();
@@ -43,6 +45,7 @@ namespace Hazel
 	{
 		HZ_PROFILE_FUNCTION();
 
+		ScriptEngine::Shutdown();
 		Renderer::Shutdown();
 	}
 
